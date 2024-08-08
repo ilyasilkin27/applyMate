@@ -1,12 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
 import { getAuthorizationUrl, getAccessToken, refreshAccessToken } from './auth.js';
-import { getVacancies, applyToVacancy } from './api.js';
+import { getVacancies } from './api.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-const coverLetter = ``;
 
 app.get('/api/authorize', (req, res) => {
     const authorizationUrl = getAuthorizationUrl();
