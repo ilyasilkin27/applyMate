@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { getAuthorizationUrl, getAccessToken, refreshAccessToken } from './auth.js';
+import { getAccessToken, refreshAccessToken } from './auth.js';
 import { getVacancies, applyToVacancy } from './api.js';
 
 const coverLetter = `
@@ -36,8 +36,6 @@ const coverLetter = `
 `;
 
 const autoApply = async (searchTerm) => {
-    const authorizationUrl = getAuthorizationUrl();
-
     let tokenData = {};
     if (!tokenData.accessToken || Date.now() > tokenData.expiresIn * 1000) {
         const authorizationCode = '';
