@@ -5,8 +5,9 @@ import { getVacancies } from './api.js';
 
 const app = express();
 app.use(cors({
-    origin: 'https://applymatefrontend-qzmmo6nn2-ilyas-projects-973327cb.vercel.app', // URL фронтенда
-    credentials: true
+    origin: 'https://applymatefrontend-qzmmo6nn2-ilyas-projects-973327cb.vercel.app', // Разрешите доступ с вашего фронтенда
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }));
 const port = process.env.PORT || 3000;
 
