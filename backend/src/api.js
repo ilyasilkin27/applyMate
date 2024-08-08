@@ -1,21 +1,5 @@
 import axios from 'axios';
 
-const clientId = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
-
-export const getAccessToken = async () => {
-    try {
-        const response = await axios.post('https://api.hh.ru/token', {
-            grant_type: 'client_credentials',
-            client_id: clientId,
-            client_secret: clientSecret
-        });
-        return response.data.access_token;
-    } catch (error) {
-        console.error('Ошибка при получении токена доступа:', error);
-    }
-};
-
 export const getVacancies = async (searchTerm, accessToken) => {
     try {
         const response = await axios.get('https://api.hh.ru/vacancies', {

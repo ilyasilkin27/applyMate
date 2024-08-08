@@ -1,21 +1,7 @@
 import 'dotenv/config';
-import { getAccessToken, getVacancies, applyToVacancy } from './api.js';
+import { getAuthorizationUrl, getAccessToken, refreshAccessToken } from './auth.js';
+import { getVacancies, applyToVacancy } from './api.js';
 
-const autoApply = async (searchTerm, coverLetter) => {
-    const accessToken = await getAccessToken();
-    if (!accessToken) {
-        console.error('Не удалось получить токен доступа');
-        return;
-    }
-
-    const vacancies = await getVacancies(searchTerm, accessToken);
-    console.log(vacancies);
-    // for (const vacancy of vacancies) {
-    //     await applyToVacancy(vacancy.id, coverLetter, accessToken);
-    // }
-};
-
-const searchTerm = 'фронтенд';
 const coverLetter = `
 Здравствуйте!
 
@@ -49,4 +35,31 @@ const coverLetter = `
 - [GitHub](https://github.com/ilyasilkin27)
 `;
 
-autoApply(searchTerm, coverLetter);
+const autoApply = async (searchTerm) => {
+    const authorizationUrl = getAuthorizationUrl();
+
+    let tokenData = {};
+    if (!tokenData.accessToken || Date.now() > tokenData.expiresIn * 1000) {
+        const authorizationCode = '';
+        if (!tokenData.accessToken) {
+            tokenData = await getAccessToken(authorizationCode);
+        } else {
+            tokenData = await refreshAccessToken(tokenData.refreshToken);
+        }
+        if (!tokenData) {
+            console.error('Не удалось получить или обновить токен доступа');
+            return;
+        }
+    }
+
+    const vacancies = await getVacancies(searchTerm, tokenData.accessToken);
+    console.log(vacancies);
+
+    // for (const vacancy of vacancies) {
+    //     await applyToVacancy(vacancy.id, coverLetter, tokenData.accessToken);
+    // }
+};
+
+const searchTerm = 'фронтенд';
+
+autoApply(searchTerm);
