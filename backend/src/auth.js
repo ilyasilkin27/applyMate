@@ -5,7 +5,7 @@ const clientSecret = process.env.CLIENT_SECRET;
 const redirectUri = process.env.REDIRECT_URI;
 
 export const getAuthorizationUrl = () => {
-    const state = 'sdjofi0(JF)(#WF$%@#%#@^';
+    const state = '666999';
     return `https://hh.ru/oauth/authorize?response_type=code&client_id=${clientId}&state=${state}&redirect_uri=${encodeURIComponent(redirectUri)}`;
 };
 

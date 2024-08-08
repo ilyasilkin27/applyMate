@@ -1,11 +1,16 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getAuthorizationUrl } from '../../../backend/src/auth';
+import axios from 'axios';
 
 const Login = () => {
-    const handleLogin = () => {
-        const authorizationUrl = getAuthorizationUrl();
-        window.location.href = authorizationUrl;
+    const handleLogin = async () => {
+        try {
+            const response = await axios.get('/api/authorize');
+            const authorizationUrl = response.data.url;
+            window.location.href = authorizationUrl;
+        } catch (error) {
+            console.error('Ошибка при получении URL авторизации:', error);
+        }
     };
 
     return (
