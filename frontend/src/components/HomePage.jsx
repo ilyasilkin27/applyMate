@@ -1,20 +1,43 @@
-import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import ButtonComponent from "./ButtonComponent";
+import React, { useEffect, useState } from "react";
+import { Container, Spinner, Alert } from "react-bootstrap";
+import ResumeList from "./ResumeList";
 
 const HomePage = () => {
-  const handleButtonClick = () => {
-    alert("Button clicked!");
-  };
+  const [resumes, setResumes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchResumes = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/resumes", {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setResumes(data.items || []);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResumes();
+  }, []);
 
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <Row className="text-center">
-        <Col>
-          <h1>Welcome to ApplyMate</h1>
-          <ButtonComponent label="Click Me" onClick={handleButtonClick} />
-        </Col>
-      </Row>
+    <Container className="mt-4">
+      {loading && <Spinner animation="border" />}
+      {error && <Alert variant="danger">{error}</Alert>}
+      {!loading && !error && resumes.length === 0 && (
+        <Alert variant="info">No resumes found.</Alert>
+      )}
+      {!loading && !error && resumes.length > 0 && (
+        <ResumeList resumes={resumes} />
+      )}
     </Container>
   );
 };

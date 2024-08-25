@@ -70,6 +70,34 @@ app.get("/callback", async (req, res) => {
   }
 });
 
+app.get("/resumes", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  const HOST = "hh.ru";
+  const USER_AGENT = "ApplyMate/1.0 (ilyasilkin27@gmail.com)";
+
+  if (!accessToken) {
+    return res.status(401).json({ error: "No access token provided" });
+  }
+
+  try {
+    const response = await axios.get(`https://api.hh.ru/resumes/mine`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "HH-User-Agent": USER_AGENT,
+      },
+      params: {
+        locale: "RU",
+        host: HOST,
+      },
+    });
+    
+    res.json(response.data);
+  } catch (error) {
+    console.error("Failed to fetch resumes", error);
+    res.status(500).json({ error: "Failed to fetch resumes" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
