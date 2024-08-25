@@ -1,22 +1,19 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
 
-const ResumeList = ({ resumes }) => {
+const ResumeList = ({ resumes, onSelect }) => {
   return (
     <ListGroup>
       {resumes.map((resume) => (
-        <ListGroup.Item key={resume.id}>
+        <ListGroup.Item
+          key={resume.id}
+          onClick={() => onSelect(resume.id)}
+          style={{ cursor: "pointer" }}
+        >
           <h5>{resume.title}</h5>
           <p>
             {resume.first_name} {resume.middle_name} {resume.last_name}
           </p>
-          <a
-            href={resume.alternate_url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Resume
-          </a>
         </ListGroup.Item>
       ))}
     </ListGroup>

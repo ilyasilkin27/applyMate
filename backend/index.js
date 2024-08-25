@@ -90,11 +90,40 @@ app.get("/resumes", async (req, res) => {
         host: HOST,
       },
     });
-    
+
     res.json(response.data);
   } catch (error) {
     console.error("Failed to fetch resumes", error);
     res.status(500).json({ error: "Failed to fetch resumes" });
+  }
+});
+
+app.get("/resumes/:resumeId/similar_vacancies", async (req, res) => {
+  const HH_API_BASE_URL = "https://api.hh.ru";
+  const { resumeId } = req.params;
+  const accessToken = req.cookies.access_token;
+
+  if (!accessToken) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized. No access token found." });
+  }
+
+  try {
+    const response = await axios.get(
+      `${HH_API_BASE_URL}/resumes/${resumeId}/similar_vacancies`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching similar vacancies:", error);
+    res.status(500).json({ message: "Error fetching similar vacancies" });
   }
 });
 
