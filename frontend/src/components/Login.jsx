@@ -4,7 +4,7 @@ import ButtonComponent from "./ButtonComponent";
 
 const Login = () => {
   const handleLogin = () => {
-    console.log("Login button clicked");
+    window.location.href = "http://localhost:3001/login";
   };
 
   return (
