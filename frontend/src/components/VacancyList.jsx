@@ -1,7 +1,7 @@
 import React from "react";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, Button } from "react-bootstrap";
 
-const VacancyList = ({ vacancies }) => {
+const VacancyList = ({ vacancies, onApply }) => {
   return (
     <ListGroup>
       {vacancies.map((vacancy) => (
@@ -25,6 +25,9 @@ const VacancyList = ({ vacancies }) => {
           >
             View Vacancy
           </a>
+          <Button variant="primary" onClick={() => onApply(vacancy.id)}>
+            Apply
+          </Button>
         </ListGroup.Item>
       ))}
     </ListGroup>
