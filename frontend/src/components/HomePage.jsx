@@ -1,65 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Spinner, Alert, Button, Form } from "react-bootstrap";
+import { useFetchResumes, useFetchVacancies } from "../hooks/dataHooks";
 import ResumeList from "./ResumeList";
 import VacancyList from "./VacancyList";
 
 const HomePage = () => {
-  const [resumes, setResumes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    resumes,
+    loading: resumesLoading,
+    error: resumesError,
+  } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
-  const [vacancies, setVacancies] = useState([]);
-  const [vacanciesLoading, setVacanciesLoading] = useState(false);
-  const [vacanciesError, setVacanciesError] = useState(null);
+  const {
+    vacancies,
+    loading: vacanciesLoading,
+    error: vacanciesError,
+  } = useFetchVacancies(selectedResumeId);
   const [coverLetter, setCoverLetter] = useState("");
-
-  useEffect(() => {
-    const fetchResumes = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/resumes", {
-          credentials: "include",
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setResumes(data.items || []);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchResumes();
-  }, []);
-
-  useEffect(() => {
-    if (selectedResumeId) {
-      const fetchVacancies = async () => {
-        setVacanciesLoading(true);
-        try {
-          const response = await fetch(
-            `http://localhost:3001/resumes/${selectedResumeId}/similar_vacancies`,
-            {
-              credentials: "include",
-            }
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          setVacancies(data.items || []);
-        } catch (err) {
-          setVacanciesError(err.message);
-        } finally {
-          setVacanciesLoading(false);
-        }
-      };
-
-      fetchVacancies();
-    }
-  }, [selectedResumeId]);
 
   const handleResumeSelect = (resumeId) => {
     setSelectedResumeId(resumeId);
@@ -76,9 +33,7 @@ const HomePage = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              vacancies: vacancies.map((vacancy) => ({
-                id: vacancy.id,
-              })),
+              vacancies: vacancies.map((vacancy) => ({ id: vacancy.id })),
               coverLetter,
             }),
             credentials: "include",
@@ -121,12 +76,12 @@ const HomePage = () => {
 
   return (
     <Container className="mt-4">
-      {loading && <Spinner animation="border" />}
-      {error && <Alert variant="danger">{error}</Alert>}
-      {!loading && !error && resumes.length === 0 && (
+      {resumesLoading && <Spinner animation="border" />}
+      {resumesError && <Alert variant="danger">{resumesError}</Alert>}
+      {!resumesLoading && !resumesError && resumes.length === 0 && (
         <Alert variant="info">No resumes found.</Alert>
       )}
-      {!loading && !error && resumes.length > 0 && (
+      {!resumesLoading && !resumesError && resumes.length > 0 && (
         <ResumeList resumes={resumes} onSelect={handleResumeSelect} />
       )}
       {selectedResumeId && (
