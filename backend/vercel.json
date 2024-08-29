@@ -11,6 +11,5 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ],
-  "ignoreCommand": "echo 'backend/node_modules/' > .vercelignore && echo 'backend/.env' >> .vercelignore"
+  ]
 }
