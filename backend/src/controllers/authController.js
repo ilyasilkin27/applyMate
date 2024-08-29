@@ -35,7 +35,6 @@ export const callback = async (req, res) => {
 
     const { access_token, refresh_token } = response.data;
 
-    console.log("response.data", response.data);
     console.log("Setting access_token:", access_token);
     console.log("Setting refresh_token:", refresh_token);
 
