@@ -38,14 +38,17 @@ export const callback = async (req, res) => {
     console.log("Setting access_token:", access_token);
     console.log("Setting refresh_token:", refresh_token);
 
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
+
     res.cookie("access_token", access_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: "production",
       sameSite: "None",
     });
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: "production",
       sameSite: "None",
     });
 
