@@ -66,7 +66,7 @@ const HomePage = () => {
           </Form.Group>
           <Button
             variant="primary"
-            className="mt-3"
+            className="mt-3 mb-3"
             onClick={() => handleApply(vacancies.map((v) => v.id))}
           >
             Apply to All Vacancies
