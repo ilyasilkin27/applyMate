@@ -4,7 +4,7 @@ import '../styles/login.css';
 
 const Login = () => {
   const handleLogin = () => {
-    window.location.href = "http://localhost:3001/login";
+    window.location.href = "https://apply-mate-backend.vercel.app/login";
   };
 
   return (

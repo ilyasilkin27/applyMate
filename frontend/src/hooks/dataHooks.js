@@ -8,7 +8,7 @@ export const useFetchResumes = () => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const response = await fetch("http://localhost:3001/resumes", {
+        const response = await fetch("https://apply-mate-backend.vercel.app/resumes", {
           credentials: "include",
         });
         if (!response.ok) {
@@ -40,7 +40,7 @@ export const useFetchVacancies = (selectedResumeId) => {
         setLoading(true);
         try {
           const response = await fetch(
-            `http://localhost:3001/resumes/${selectedResumeId}/similar_vacancies`,
+            `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/similar_vacancies`,
             {
               credentials: "include",
             }

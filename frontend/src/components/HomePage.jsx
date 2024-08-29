@@ -35,7 +35,7 @@ const HomePage = () => {
     if (!selectedResumeId) return;
     try {
       const response = await fetch(
-        `http://localhost:3001/resumes/${selectedResumeId}/apply_all_vacancies`,
+        `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/apply_all_vacancies`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
