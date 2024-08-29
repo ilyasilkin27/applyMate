@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Spinner, Alert, Button, Form } from "react-bootstrap";
 import { useFetchResumes, useFetchVacancies } from "../hooks/dataHooks";
 import ResumeList from "./ResumeList";
 import VacancyList from "./VacancyList";
-import '../styles/homePage.css';
+import "../styles/homePage.css";
 
 const HomePage = () => {
   const {
@@ -17,7 +17,19 @@ const HomePage = () => {
     loading: vacanciesLoading,
     error: vacanciesError,
   } = useFetchVacancies(selectedResumeId);
+
   const [coverLetter, setCoverLetter] = useState("");
+
+  useEffect(() => {
+    const savedCoverLetter = localStorage.getItem("coverLetter");
+    if (savedCoverLetter) {
+      setCoverLetter(savedCoverLetter);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("coverLetter", coverLetter);
+  }, [coverLetter]);
 
   const handleApply = async (vacancyIds) => {
     if (!selectedResumeId) return;
