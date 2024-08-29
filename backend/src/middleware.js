@@ -7,7 +7,7 @@ const middleware = (app) => {
   app.use(cookieParser());
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: "https://apply-mate-frontend.vercel.app",
       credentials: true,
     })
   );

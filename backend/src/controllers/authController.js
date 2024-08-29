@@ -44,7 +44,7 @@ export const callback = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    res.redirect("http://localhost:3000/home");
+    res.redirect("https://apply-mate-frontend.vercel.app/home");
   } catch (error) {
     console.error("Failed to exchange authorization code", error);
     res.status(500).json({ error: "Failed to exchange authorization code" });
