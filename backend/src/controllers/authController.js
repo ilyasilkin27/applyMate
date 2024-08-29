@@ -34,10 +34,11 @@ export const callback = async (req, res) => {
     );
 
     const { access_token, refresh_token } = response.data;
-    
+
     console.log("response.data", response.data);
-    console.log("response.data", response.data);
-    
+    console.log("Setting access_token:", access_token);
+    console.log("Setting refresh_token:", refresh_token);
+
     res.cookie("access_token", access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -47,7 +48,7 @@ export const callback = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    console.log("res.cookie", res.cookie);
+    console.log("Response Headers:", res.getHeaders());
 
     res.redirect("https://apply-mate-frontend.vercel.app/home");
   } catch (error) {
