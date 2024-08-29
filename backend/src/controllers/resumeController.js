@@ -4,8 +4,6 @@ import { USER_AGENT } from "../utils.js";
 export const getResumes = async (req, res) => {
   const accessToken = req.cookies.access_token;
   
-  console.log("req.cookies", req.cookies);
-  
   if (!accessToken) {
     return res.status(401).json({ error: "No access token provided" });
   }

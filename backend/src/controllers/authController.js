@@ -41,10 +41,12 @@ export const callback = async (req, res) => {
     res.cookie("access_token", access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
     });
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "None",
     });
 
     console.log("after setting cookies:", req.cookies);
