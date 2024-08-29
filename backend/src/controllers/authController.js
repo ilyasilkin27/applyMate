@@ -47,7 +47,7 @@ export const callback = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
-    console.log("Response Headers:", res.getHeaders());
+    console.log("Response Headers after setting cookies:", res.getHeaders());
 
     res.redirect("https://apply-mate-frontend.vercel.app/home");
   } catch (error) {
