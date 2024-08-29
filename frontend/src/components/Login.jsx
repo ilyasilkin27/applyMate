@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Button } from "react-bootstrap";
+import '../styles/login.css';
 
 const Login = () => {
   const handleLogin = () => {
@@ -8,9 +9,11 @@ const Login = () => {
 
   return (
     <Container className="d-flex vh-100 justify-content-center align-items-center">
-      <div className="text-center">
-        <h1>ApplyMate</h1>
-        <Button variant="primary" onClick={handleLogin}>
+      <div className="auth-container text-center">
+        <h3 className="mb-4">
+          <strong>ApplyMate</strong>
+        </h3>
+        <Button variant="primary" onClick={handleLogin} className="w-100 mb-2">
           Log in
         </Button>
       </div>
