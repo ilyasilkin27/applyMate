@@ -1,5 +1,5 @@
 [![Ru](https://img.shields.io/badge/Rus-blue)](README_ru.md)
-[Live](https://apply-mate-frontend.vercel.app/login)
+[![Live](https://img.shields.io/badge/Rus-pink)](https://apply-mate-frontend.vercel.app/login)
 
 # ApplyMate
 
