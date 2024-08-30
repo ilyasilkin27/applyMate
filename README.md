@@ -3,7 +3,7 @@
 
 # ApplyMate
 
-ApplyMate is a web application that helps you streamline your job application process. It allows you to log in using your hh.ru credentials, fetch all your resumes and recommended vacancies, and apply to all of them with a single click.
+ApplyMate is a web application that helps you streamline your job application process. It allows you to log in using your hh.ru credentials, fetch all your resumes and recommended vacancies, and apply to all of them with a single click. Please note that there is a limit of 200 vacancies per day that you can apply to.
 
 ## Project Structure
 
