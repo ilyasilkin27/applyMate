@@ -56,7 +56,10 @@ const HomePage = () => {
 
   return (
     <Container className="mt-4">
-      <Logout />
+      <div className="d-flex justify-content-center align-items-center mb-3">
+        <h1>ApplyMate</h1>
+        <Logout />
+      </div>
       {resumesLoading && (
         <div className="spinnerOverlay">
           <Spinner animation="border" />

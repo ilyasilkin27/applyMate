@@ -7,7 +7,7 @@ const Logout = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center mb-3 align-items-center">
+    <div className="d-flex justify-content-center ms-5 align-items-center">
       <Button variant="danger" onClick={handleLogout}>
         Logout
       </Button>
