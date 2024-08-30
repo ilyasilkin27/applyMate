@@ -14,7 +14,6 @@ const HomePage = () => {
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [applyMessage, setApplyMessage] = useState(null);
   const {
     vacancies,
     loading: vacanciesLoading,
@@ -36,7 +35,6 @@ const HomePage = () => {
 
   const handleApply = async (vacancyIds) => {
     if (!selectedResumeId) return;
-    setIsDisabled(true);
     try {
       const response = await fetch(
         `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/apply_all_vacancies`,
@@ -51,22 +49,15 @@ const HomePage = () => {
         }
       );
       const { message } = await response.json();
-      setApplyMessage({ type: "success", text: message });
+      alert(message);
     } catch (err) {
       console.error("Error applying to vacancies:", err);
-      setApplyMessage({
-        type: "danger",
-        text: "Failed to apply to some vacancies.",
-      });
     }
   };
 
-  const handleApplyClick = () => {
-    const filteredVacancies = vacancies.filter(
-      (vacancy) => !vacancy.description.includes("Must process test")
-    );
-    handleApply(filteredVacancies.map((v) => v.id));
-  };
+  const filteredVacancies = vacancies.filter(
+    (vacancy) => !vacancy.description.includes("Must process test")
+  );
 
   return (
     <Container className="mt-4">
@@ -98,13 +89,15 @@ const HomePage = () => {
               value={coverLetter}
               onChange={(e) => setCoverLetter(e.target.value)}
               placeholder="Enter your cover letter here..."
-              disabled={isDisabled}
             />
           </Form.Group>
           <Button
             variant="primary"
             className="mt-3 mb-3"
-            onClick={handleApplyClick}
+            onClick={() => {
+              setIsDisabled(true);
+              handleApply(filteredVacancies.map((v) => v.id));
+            }}
             disabled={isDisabled}
           >
             Apply to All Vacancies
@@ -115,22 +108,20 @@ const HomePage = () => {
             </div>
           )}
           {vacanciesError && <Alert variant="danger">{vacanciesError}</Alert>}
-          {!vacanciesLoading && !vacanciesError && vacancies.length === 0 && (
-            <Alert variant="info">No similar vacancies found.</Alert>
-          )}
-          {!vacanciesLoading && !vacanciesError && vacancies.length > 0 && (
-            <VacancyList
-              vacancies={vacancies}
-              onApply={(id) => handleApply([id])}
-              disabled={isDisabled}
-            />
-          )}
+          {!vacanciesLoading &&
+            !vacanciesError &&
+            filteredVacancies.length === 0 && (
+              <Alert variant="info">No suitable vacancies found.</Alert>
+            )}
+          {!vacanciesLoading &&
+            !vacanciesError &&
+            filteredVacancies.length > 0 && (
+              <VacancyList
+                vacancies={filteredVacancies}
+                onApply={(id) => handleApply([id])}
+              />
+            )}
         </>
-      )}
-      {applyMessage && (
-        <Alert variant={applyMessage.type} className="mt-3">
-          {applyMessage.text}
-        </Alert>
       )}
     </Container>
   );
