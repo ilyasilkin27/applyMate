@@ -105,7 +105,7 @@ const HomePage = () => {
           <Form.Group controlId="coverLetter" className="mt-3">
             <Form.Label>
               {" "}
-              <h2>Cover Letter</h2>
+              <h4>Cover Letter</h4>
             </Form.Label>
             <Form.Control
               as="textarea"
