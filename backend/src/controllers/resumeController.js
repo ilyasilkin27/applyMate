@@ -1,31 +1,4 @@
 import axios from "axios";
-import { USER_AGENT } from "../utils.js";
-
-export const getResumes = async (req, res) => {
-  const accessToken = req.cookies.access_token;
-  
-  if (!accessToken) {
-    return res.status(401).json({ error: "No access token provided" });
-  }
-
-  try {
-    const response = await axios.get(`https://api.hh.ru/resumes/mine`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "HH-User-Agent": USER_AGENT,
-      },
-      params: {
-        locale: "RU",
-        host: "hh.ru",
-      },
-    });
-
-    res.json(response.data);
-  } catch (error) {
-    console.error("Failed to fetch resumes", error);
-    res.status(500).json({ error: "Failed to fetch resumes" });
-  }
-};
 
 export const getSimilarVacancies = async (req, res) => {
   const { resumeId } = req.params;
@@ -58,6 +31,10 @@ export const getSimilarVacancies = async (req, res) => {
           },
         }
       );
+
+      if (response.data.items.length === 0) {
+        break;
+      }
 
       allVacancies = allVacancies.concat(response.data.items);
 
