@@ -14,8 +14,7 @@ const HomePage = () => {
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
-  const [statusVariant, setStatusVariant] = useState("success");
+  const [applyMessage, setApplyMessage] = useState(null);
   const {
     vacancies,
     loading: vacanciesLoading,
@@ -37,6 +36,7 @@ const HomePage = () => {
 
   const handleApply = async (vacancyIds) => {
     if (!selectedResumeId) return;
+    setIsDisabled(true);
     try {
       const response = await fetch(
         `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/apply_all_vacancies`,
@@ -51,21 +51,21 @@ const HomePage = () => {
         }
       );
       const { message } = await response.json();
-
-      if (response.ok) {
-        setStatusVariant("success");
-        setStatusMessage(`Success: ${message}`);
-      } else {
-        setStatusVariant("danger");
-        setStatusMessage(`Error: ${message}`);
-      }
+      setApplyMessage({ type: "success", text: message });
     } catch (err) {
       console.error("Error applying to vacancies:", err);
-      setStatusVariant("danger");
-      setStatusMessage("Error: Failed to apply to vacancies.");
-    } finally {
-      setIsDisabled(true);
+      setApplyMessage({
+        type: "danger",
+        text: "Failed to apply to some vacancies.",
+      });
     }
+  };
+
+  const handleApplyClick = () => {
+    const filteredVacancies = vacancies.filter(
+      (vacancy) => !vacancy.description.includes("Must process test")
+    );
+    handleApply(filteredVacancies.map((v) => v.id));
   };
 
   return (
@@ -104,16 +104,11 @@ const HomePage = () => {
           <Button
             variant="primary"
             className="mt-3 mb-3"
-            onClick={() => handleApply(vacancies.map((v) => v.id))}
+            onClick={handleApplyClick}
             disabled={isDisabled}
           >
             Apply to All Vacancies
           </Button>
-          {statusMessage && (
-            <Alert variant={statusVariant} className="mt-3">
-              {statusMessage}
-            </Alert>
-          )}
           {vacanciesLoading && (
             <div className="spinnerOverlay">
               <Spinner animation="border" />
@@ -131,6 +126,11 @@ const HomePage = () => {
             />
           )}
         </>
+      )}
+      {applyMessage && (
+        <Alert variant={applyMessage.type} className="mt-3">
+          {applyMessage.text}
+        </Alert>
       )}
     </Container>
   );
