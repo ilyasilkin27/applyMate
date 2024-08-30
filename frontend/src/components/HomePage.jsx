@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Spinner, Alert, Button, Form } from "react-bootstrap";
 import { useFetchResumes, useFetchVacancies } from "../hooks/dataHooks";
+import Logout from "./Logout";
 import ResumeList from "./ResumeList";
 import VacancyList from "./VacancyList";
 import "../styles/homePage.css";
@@ -55,6 +56,7 @@ const HomePage = () => {
 
   return (
     <Container className="mt-4">
+      <Logout />
       {resumesLoading && (
         <div className="spinnerOverlay">
           <Spinner animation="border" />

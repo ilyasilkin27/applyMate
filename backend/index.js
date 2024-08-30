@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { login, callback } from "./src/controllers/authController.js";
+import { login, callback, logout } from "./src/controllers/authController.js";
 import {
   getResumes,
   getSimilarVacancies,
@@ -20,6 +20,7 @@ middleware(app);
 
 app.get("/login", login);
 app.get("/callback", callback);
+app.get("/logout", logout);
 app.get("/resumes", getResumes);
 app.get("/resumes/:resumeId/similar_vacancies", getSimilarVacancies);
 app.post("/resumes/:resumeId/apply_all_vacancies", applyAllVacancies);
