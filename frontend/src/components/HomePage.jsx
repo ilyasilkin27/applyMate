@@ -14,6 +14,8 @@ const HomePage = () => {
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusVariant, setStatusVariant] = useState("success");
   const {
     vacancies,
     loading: vacanciesLoading,
@@ -49,9 +51,20 @@ const HomePage = () => {
         }
       );
       const { message } = await response.json();
-      alert(message);
+
+      if (response.ok) {
+        setStatusVariant("success");
+        setStatusMessage(`Success: ${message}`);
+      } else {
+        setStatusVariant("danger");
+        setStatusMessage(`Error: ${message}`);
+      }
     } catch (err) {
       console.error("Error applying to vacancies:", err);
+      setStatusVariant("danger");
+      setStatusMessage("Error: Failed to apply to vacancies.");
+    } finally {
+      setIsDisabled(true);
     }
   };
 
@@ -85,19 +98,22 @@ const HomePage = () => {
               value={coverLetter}
               onChange={(e) => setCoverLetter(e.target.value)}
               placeholder="Enter your cover letter here..."
+              disabled={isDisabled}
             />
           </Form.Group>
           <Button
             variant="primary"
             className="mt-3 mb-3"
-            onClick={() => {
-              setIsDisabled(true);
-              handleApply(vacancies.map((v) => v.id));
-            }}
+            onClick={() => handleApply(vacancies.map((v) => v.id))}
             disabled={isDisabled}
           >
             Apply to All Vacancies
           </Button>
+          {statusMessage && (
+            <Alert variant={statusVariant} className="mt-3">
+              {statusMessage}
+            </Alert>
+          )}
           {vacanciesLoading && (
             <div className="spinnerOverlay">
               <Spinner animation="border" />
@@ -111,6 +127,7 @@ const HomePage = () => {
             <VacancyList
               vacancies={vacancies}
               onApply={(id) => handleApply([id])}
+              disabled={isDisabled}
             />
           )}
         </>
