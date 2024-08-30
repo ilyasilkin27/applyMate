@@ -21,6 +21,7 @@ const HomePage = () => {
   } = useFetchVacancies(selectedResumeId);
 
   const [coverLetter, setCoverLetter] = useState("");
+  const [customAlert, setCustomAlert] = useState(null);
 
   useEffect(() => {
     const savedCoverLetter = localStorage.getItem("coverLetter");
@@ -48,14 +49,22 @@ const HomePage = () => {
           credentials: "include",
         }
       );
-      const { message } = await response.json();
-      alert(message);
+      const data = await response.json();
+
+      if (data.description === "Daily negotiations limit is exceeded") {
+        setCustomAlert(
+          "Daily limit of 200 negotiations has already been used."
+        );
+      } else {
+        alert(data.message);
+      }
     } catch (err) {
       console.error("Error applying to vacancies:", err);
+      setCustomAlert("An error occurred while applying to vacancies.");
     }
   };
 
-const filteredVacancies = vacancies.filter((vacancy) => !vacancy.has_test);
+  const filteredVacancies = vacancies.filter((vacancy) => !vacancy.has_test);
 
   return (
     <Container className="mt-4">
@@ -119,6 +128,7 @@ const filteredVacancies = vacancies.filter((vacancy) => !vacancy.has_test);
                 onApply={(id) => handleApply([id])}
               />
             )}
+          {customAlert && <Alert variant="warning">{customAlert}</Alert>}{" "}
         </>
       )}
     </Container>
