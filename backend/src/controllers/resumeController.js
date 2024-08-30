@@ -29,6 +29,17 @@ export const getResumes = async (req, res) => {
 
 export const getSimilarVacancies = async (req, res) => {
   const { resumeId } = req.params;
+  const {
+    page = 0,
+    per_page = 100,
+    text,
+    experience,
+    employment,
+    schedule,
+    area,
+    currency,
+    salary,
+  } = req.query;
   const accessToken = req.cookies.access_token;
 
   if (!accessToken) {
@@ -44,6 +55,17 @@ export const getSimilarVacancies = async (req, res) => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
+        },
+        params: {
+          page,
+          per_page,
+          text,
+          experience,
+          employment,
+          schedule,
+          area,
+          currency,
+          salary,
         },
       }
     );
