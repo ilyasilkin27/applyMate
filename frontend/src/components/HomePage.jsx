@@ -55,10 +55,7 @@ const HomePage = () => {
     }
   };
 
-  const filteredVacancies = vacancies.filter(
-    (vacancy) =>
-      vacancy.description && !vacancy.description.includes("Must process test")
-  );
+const filteredVacancies = vacancies.filter((vacancy) => !vacancy.has_test);
 
   return (
     <Container className="mt-4">
