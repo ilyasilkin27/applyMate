@@ -68,7 +68,9 @@ const HomePage = () => {
     } catch (err) {
       console.error("Error applying to vacancies:", err);
       if (err.message.includes("Failed to fetch")) {
-        setCustomAlert("Network error: Unable to connect to the server.");
+        setCustomAlert(
+          "Daily limit of 200 negotiations has already been used."
+        );
       } else {
         setCustomAlert("An error occurred while applying to vacancies.");
       }
