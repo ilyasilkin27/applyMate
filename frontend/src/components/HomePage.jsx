@@ -103,7 +103,10 @@ const HomePage = () => {
           <h3>Recommended Vacancies</h3>
           {customAlert && <Alert variant="warning">{customAlert}</Alert>}{" "}
           <Form.Group controlId="coverLetter" className="mt-3">
-            <Form.Label>Cover Letter</Form.Label>
+            <Form.Label>
+              {" "}
+              <h2>Cover Letter</h2>
+            </Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
