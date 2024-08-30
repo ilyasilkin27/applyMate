@@ -13,6 +13,7 @@ const HomePage = () => {
     error: resumesError,
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(false);
   const {
     vacancies,
     loading: vacanciesLoading,
@@ -89,7 +90,11 @@ const HomePage = () => {
           <Button
             variant="primary"
             className="mt-3 mb-3"
-            onClick={() => handleApply(vacancies.map((v) => v.id))}
+            onClick={() => {
+              setIsDisabled(true);
+              handleApply(vacancies.map((v) => v.id));
+            }}
+            disabled={isDisabled}
           >
             Apply to All Vacancies
           </Button>
