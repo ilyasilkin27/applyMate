@@ -49,18 +49,35 @@ const HomePage = () => {
           credentials: "include",
         }
       );
-      const data = await response.json();
 
-      if (data.description === "Daily negotiations limit is exceeded") {
-        setCustomAlert(
-          "Daily limit of 200 negotiations has already been used."
-        );
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.description === "Daily negotiations limit is exceeded") {
+          setCustomAlert(
+            "Daily limit of 200 negotiations has already been used."
+          );
+        } else {
+          setCustomAlert(
+            `Error: ${errorData.description || "An unknown error occurred"}`
+          );
+        }
       } else {
+        const data = await response.json();
         alert(data.message);
       }
     } catch (err) {
       console.error("Error applying to vacancies:", err);
-      setCustomAlert("An error occurred while applying to vacancies.");
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.description === "Daily negotiations limit is exceeded"
+      ) {
+        setCustomAlert(
+          "Daily limit of 200 negotiations has already been used."
+        );
+      } else {
+        setCustomAlert("An error occurred while applying to vacancies.");
+      }
     }
   };
 
@@ -88,6 +105,7 @@ const HomePage = () => {
       {selectedResumeId && (
         <>
           <h3>Recommended Vacancies</h3>
+          {customAlert && <Alert variant="warning">{customAlert}</Alert>}{" "}
           <Form.Group controlId="coverLetter" className="mt-3">
             <Form.Label>Cover Letter</Form.Label>
             <Form.Control
@@ -128,7 +146,6 @@ const HomePage = () => {
                 onApply={(id) => handleApply([id])}
               />
             )}
-          {customAlert && <Alert variant="warning">{customAlert}</Alert>}{" "}
         </>
       )}
     </Container>
