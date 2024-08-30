@@ -56,7 +56,8 @@ const HomePage = () => {
   };
 
   const filteredVacancies = vacancies.filter(
-    (vacancy) => !vacancy.description.includes("Must process test")
+    (vacancy) =>
+      vacancy.description && !vacancy.description.includes("Must process test")
   );
 
   return (
