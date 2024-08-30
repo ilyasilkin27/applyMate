@@ -38,37 +38,17 @@ export const getSimilarVacancies = async (req, res) => {
   }
 
   try {
-    const perPage = 100;
-    const totalVacs = 200;
-    const pages = Math.ceil(totalVacs / perPage);
-
-    let allVacancies = [];
-
-    for (let page = 0; page < pages; page++) {
-      const response = await axios.get(
-        `https://api.hh.ru/resumes/${resumeId}/similar_vacancies`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
-          },
-          params: {
-            per_page: perPage,
-            page: page,
-          },
-        }
-      );
-
-      if (response.data.items.length === 0) {
-        break;
+    const response = await axios.get(
+      `https://api.hh.ru/resumes/${resumeId}/similar_vacancies`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
+        },
       }
+    );
 
-      allVacancies = allVacancies.concat(response.data.items);
-
-      if (allVacancies.length >= totalVacs) break;
-    }
-
-    res.json(allVacancies.slice(0, totalVacs));
+    res.json(response.data);
   } catch (error) {
     console.error("Error fetching similar vacancies:", error);
     res.status(500).json({ message: "Error fetching similar vacancies" });
