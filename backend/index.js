@@ -4,6 +4,7 @@ import { login, callback, logout } from "./src/controllers/authController.js";
 import {
   getResumes,
   getSimilarVacancies,
+  searchVacancies,
 } from "./src/controllers/resumeController.js";
 import {
   applyAllVacancies,
@@ -25,6 +26,7 @@ app.get("/resumes", getResumes);
 app.get("/resumes/:resumeId/similar_vacancies", getSimilarVacancies);
 app.post("/resumes/:resumeId/apply_all_vacancies", applyAllVacancies);
 app.post("/resumes/:resumeId/apply_vacancy", applyVacancy);
+app.get("/vacancies/search", searchVacancies);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

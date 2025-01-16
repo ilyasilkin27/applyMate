@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Spinner, Alert, Button, Form } from "react-bootstrap";
+import {
+  Container,
+  Spinner,
+  Alert,
+  Button,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { useFetchResumes, useFetchVacancies } from "../hooks/dataHooks";
 import Logout from "./Logout";
 import ResumeList from "./ResumeList";
@@ -14,14 +22,17 @@ const HomePage = () => {
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const {
     vacancies,
     loading: vacanciesLoading,
     error: vacanciesError,
-  } = useFetchVacancies(selectedResumeId);
+  } = useFetchVacancies(selectedResumeId, searchKeyword);
 
   const [coverLetter, setCoverLetter] = useState("");
   const [customAlert, setCustomAlert] = useState(null);
+  const [filteredVacancies, setFilteredVacancies] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const savedCoverLetter = localStorage.getItem("coverLetter");
@@ -33,6 +44,10 @@ const HomePage = () => {
   useEffect(() => {
     localStorage.setItem("coverLetter", coverLetter);
   }, [coverLetter]);
+
+  useEffect(() => {
+    setFilteredVacancies(vacancies.filter((vacancy) => !vacancy.has_test));
+  }, [vacancies]);
 
   const handleApply = async (vacancyIds) => {
     if (!selectedResumeId) return;
@@ -67,17 +82,16 @@ const HomePage = () => {
       }
     } catch (err) {
       console.error("Error applying to vacancies:", err);
-      if (err.message.includes("Failed to fetch")) {
-        setCustomAlert(
-          "Daily limit of 200 negotiations has already been used."
-        );
-      } else {
-        setCustomAlert("An error occurred while applying to vacancies.");
-      }
+      setCustomAlert("An error occurred while applying to vacancies.");
     }
   };
 
-  const filteredVacancies = vacancies.filter((vacancy) => !vacancy.has_test);
+  const handleSearch = () => {
+    const results = vacancies.filter((vacancy) =>
+      vacancy.name.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+    setSearchResults(results); // теперь результаты сохраняются в searchResults
+  };
 
   return (
     <Container className="mt-4">
@@ -100,11 +114,8 @@ const HomePage = () => {
 
       {selectedResumeId && (
         <>
-          <h3>Recommended Vacancies</h3>
-          {customAlert && <Alert variant="warning">{customAlert}</Alert>}{" "}
           <Form.Group controlId="coverLetter" className="mt-3">
             <Form.Label>
-              {" "}
               <h4>Cover Letter</h4>
             </Form.Label>
             <Form.Control
@@ -115,36 +126,50 @@ const HomePage = () => {
               placeholder="Enter your cover letter here..."
             />
           </Form.Group>
-          <Button
-            variant="primary"
-            className="mt-3 mb-3"
-            onClick={() => {
-              setIsDisabled(true);
-              handleApply(filteredVacancies.map((v) => v.id));
-            }}
-            disabled={isDisabled}
-          >
-            Apply to All Vacancies
-          </Button>
-          {vacanciesLoading && (
-            <div className="spinnerOverlay">
-              <Spinner animation="border" />
-            </div>
-          )}
-          {vacanciesError && <Alert variant="danger">{vacanciesError}</Alert>}
-          {!vacanciesLoading &&
-            !vacanciesError &&
-            filteredVacancies.length === 0 && (
-              <Alert variant="info">No suitable vacancies found.</Alert>
-            )}
-          {!vacanciesLoading &&
-            !vacanciesError &&
-            filteredVacancies.length > 0 && (
-              <VacancyList
-                vacancies={filteredVacancies}
-                onApply={(id) => handleApply([id])}
+          <Row className="mt-4">
+            <Col md={6}>
+              <h3>Recommended Vacancies</h3>
+              {customAlert && <Alert variant="warning">{customAlert}</Alert>}
+              {vacanciesLoading && <Spinner animation="border" />}
+              {vacanciesError && (
+                <Alert variant="danger">{vacanciesError}</Alert>
+              )}
+              {!vacanciesLoading &&
+                !vacanciesError &&
+                filteredVacancies.length === 0 && (
+                  <Alert variant="info">No suitable vacancies found.</Alert>
+                )}
+              {!vacanciesLoading &&
+                !vacanciesError &&
+                filteredVacancies.length > 0 && (
+                  <VacancyList
+                    vacancies={filteredVacancies}
+                    onApply={(id) => handleApply([id])}
+                  />
+                )}
+            </Col>
+            <Col md={6}>
+              <h3>Search Vacancies</h3>
+              <Form.Control
+                type="text"
+                placeholder="Enter keyword"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)} // Меняем searchKeyword
+                className="mb-3"
               />
-            )}
+              <Button
+                variant="primary"
+                className="mt-3 mb-3"
+                onClick={() => {
+                  setIsDisabled(true);
+                  handleApply(filteredVacancies.map((v) => v.id));
+                }}
+                disabled={isDisabled}
+              >
+                Apply to All Vacancies
+              </Button>
+            </Col>
+          </Row>
         </>
       )}
     </Container>

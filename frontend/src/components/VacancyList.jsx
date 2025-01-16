@@ -11,7 +11,7 @@ const VacancyList = ({ vacancies, onApply }) => {
   };
 
   return (
-    <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
+    <div style={{ maxHeight: "495px", overflowY: "scroll" }}>
       <ListGroup>
         {vacancies.map((vacancy) => {
           const isApplied = appliedVacancies.includes(vacancy.id);

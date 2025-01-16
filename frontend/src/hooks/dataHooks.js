@@ -29,25 +29,28 @@ export const useFetchResumes = () => {
   return { resumes, loading, error };
 };
 
-export const useFetchVacancies = (selectedResumeId) => {
+export const useFetchVacancies = (selectedResumeId, searchKeyword) => {
   const [vacancies, setVacancies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (selectedResumeId) {
+    if (selectedResumeId || searchKeyword) {
       const fetchVacancies = async () => {
         setLoading(true);
         try {
-          const response = await fetch(
-            `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/similar_vacancies`,
-            {
-              credentials: "include",
-            }
-          );
+          const url = searchKeyword
+            ? `https://apply-mate-backend.vercel.app/vacancies/search?text=${searchKeyword}`
+            : `https://apply-mate-backend.vercel.app/resumes/${selectedResumeId}/similar_vacancies`;
+            
+          const response = await fetch(url, {
+            credentials: "include",
+          });
+
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
+
           const data = await response.json();
           setVacancies(data.items || []);
         } catch (err) {
@@ -59,7 +62,7 @@ export const useFetchVacancies = (selectedResumeId) => {
 
       fetchVacancies();
     }
-  }, [selectedResumeId]);
+  }, [selectedResumeId, searchKeyword]);
 
   return { vacancies, loading, error };
 };

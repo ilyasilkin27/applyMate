@@ -35,9 +35,6 @@ export const callback = async (req, res) => {
 
     const { access_token, refresh_token } = response.data;
 
-    console.log("Setting access_token:", access_token);
-    console.log("Setting refresh_token:", refresh_token);
-
     res.clearCookie("access_token");
     res.clearCookie("refresh_token");
 
@@ -51,8 +48,6 @@ export const callback = async (req, res) => {
       secure: "production",
       sameSite: "None",
     });
-
-    console.log("after setting cookies:", req.cookies);
 
     res.redirect("https://apply-mate-frontend.vercel.app/home");
   } catch (error) {
