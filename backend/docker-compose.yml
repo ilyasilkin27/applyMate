@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    volumes:
+      - ./auth-service:/app
+    networks:
+      - backend-network
+    depends_on:
+      - resume-service
+      - vacancies-service
+
+  resume-service:
+    build: ./resume-service
+    container_name: resume-service
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+    volumes:
+      - ./resume-service:/app
+    networks:
+      - backend-network
+
+  vacancies-service:
+    build: ./vacancies-service
+    container_name: vacancies-service
+    ports:
+      - "5002:5002"
+    environment:
+      - NODE_ENV=production
+      - PORT=5002
+    volumes:
+      - ./vacancies-service:/app
+    networks:
+      - backend-network
+
+  frontend:
+    build: ../frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - backend-network
+    depends_on:
+      - auth-service
+      - resume-service
+      - vacancies-service
+
+networks:
+  backend-network:
+    driver: bridge

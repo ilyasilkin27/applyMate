@@ -1,10 +1,9 @@
 import React from "react";
 import { Container, Button } from "react-bootstrap";
-import '../styles/login.css';
 
 const Login = () => {
   const handleLogin = () => {
-    window.location.href = "https://apply-mate-backend.vercel.app/login";
+    window.location.href = "http://localhost:5000/auth/login";
   };
 
   return (

@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 const Logout = () => {
   const handleLogout = () => {
-    window.location.href = "https://apply-mate-backend.vercel.app/logout";
+    window.location.href = "http://localhost:5000/auth/logout";
   };
 
   return (
