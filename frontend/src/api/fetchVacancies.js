@@ -10,6 +10,11 @@ export default (selectedResumeId, searchKeyword) => {
       setLoading(true);
       try {
         const accessToken = sessionStorage.getItem('access_token');
+        
+        if (!accessToken) {
+          throw new Error('Токен доступа не найден');
+        }
+
         const url = searchKeyword
           ? `https://applymate-vacancies-service.onrender.com/api/vacancies/search?text=${searchKeyword}`
           : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`;
@@ -22,7 +27,10 @@ export default (selectedResumeId, searchKeyword) => {
         });
 
         if (!response.ok) {
-          if(response.status === 502) {
+          if (response.status === 401) {
+            throw new Error('Ошибка авторизации: проверьте токен доступа');
+          }
+          if (response.status === 502) {
             throw new Error('Сервис вакансий временно недоступен');
           }
           throw new Error('Ошибка сети');
