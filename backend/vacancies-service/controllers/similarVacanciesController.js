@@ -1,7 +1,11 @@
 import axios from "axios";
 
 const getAccessToken = (req) => {
-  return req.session?.access_token;
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  return null;
 };
 
 const isAccessTokenValid = (accessToken) => !!accessToken;
@@ -75,19 +79,13 @@ export default async (req, res) => {
   const { resumeId } = req.params;
   const accessToken = getAccessToken(req);
 
-  if (!isAccessTokenValid(accessToken)) {
-    return res
-      .status(401)
-      .json({ message: "Unauthorized. No access token found." });
+  if (!accessToken) {
+    return res.status(401).json({ message: "Unauthorized. No access token found." });
   }
 
   try {
     const queryParams = buildQueryParams(req);
-    const allResults = await fetchAllSimilarVacancies(
-      accessToken,
-      resumeId,
-      queryParams
-    );
+    const allResults = await fetchAllSimilarVacancies(accessToken, resumeId, queryParams);
     res.json({ items: allResults });
   } catch (error) {
     console.error("Error fetching similar vacancies:", error);

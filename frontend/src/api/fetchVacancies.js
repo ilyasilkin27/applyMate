@@ -12,7 +12,7 @@ export default (selectedResumeId, searchKeyword) => {
         const accessToken = sessionStorage.getItem('access_token');
         
         if (!accessToken) {
-          throw new Error('Токен доступа не найден');
+          throw new Error('no access token');
         }
 
         const url = searchKeyword
@@ -28,10 +28,10 @@ export default (selectedResumeId, searchKeyword) => {
 
         if (!response.ok) {
           if (response.status === 401) {
-            throw new Error('Ошибка авторизации: проверьте токен доступа');
+            throw new Error('auth error: check access token');
           }
           if (response.status === 502) {
-            throw new Error('Сервис вакансий временно недоступен');
+            throw new Error('service error: vacancies service is temporarily unavailable');
           }
           throw new Error('Ошибка сети');
         }
