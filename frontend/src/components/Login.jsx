@@ -3,7 +3,7 @@ import { Container, Button } from "react-bootstrap";
 
 const Login = () => {
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/login";
+    window.location.href = "https://applymate-auth-service.onrender.com/auth/login";
   };
 
   return (

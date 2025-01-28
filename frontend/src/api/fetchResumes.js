@@ -8,7 +8,7 @@ export default () => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/resumes/getResumes", {
+        const response = await fetch("https://applymate-resume-service.onrender.com/api/resumes/getResumes", {
           credentials: "include",
         });
         if (!response.ok) {

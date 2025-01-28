@@ -8,7 +8,7 @@ export const applyVacancy = async (
 
   try {
     const response = await fetch(
-      `http://localhost:5002/api/vacancies/${resumeId}/apply_vacancy`,
+      `https://applymate-vacancies-service.onrender.com/api/vacancies/${resumeId}/apply_vacancy`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +47,7 @@ export const applyAllVacancies = async (
 
   try {
     const response = await fetch(
-      `http://localhost:5002/api/vacancies/${resumeId}/apply_all_vacancies`,
+      `https://applymate-vacancies-service.onrender.com/api/vacancies/${resumeId}/apply_all_vacancies`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

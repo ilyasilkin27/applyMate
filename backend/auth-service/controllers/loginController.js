@@ -6,7 +6,7 @@ dotenv.config({ path: '../.env' });
 
 export const login = (req, res) => {
   const authorizationUrl = `https://hh.ru/oauth/authorize?response_type=code&client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(
-    'http://localhost:5000/auth/finalizeLogin'
+    'https://applymate-auth-service.onrender.com/auth/finalizeLogin'
   )}`;
   res.redirect(authorizationUrl);
 };
@@ -21,7 +21,7 @@ const fetchTokens = async (code) => {
     querystring.stringify({
       grant_type: 'authorization_code',
       code,
-      redirect_uri: 'http://localhost:5000/auth/finalizeLogin',
+      redirect_uri: 'https://applymate-auth-service.onrender.com/auth/finalizeLogin',
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
     }),
@@ -60,7 +60,7 @@ export const finalizeLogin = async (req, res) => {
 
     setAuthCookies(res, access_token, refresh_token);
 
-    res.redirect('http://localhost:3000/home');
+    res.redirect('https://apply-mate-ten.vercel.app/home');
   } catch (error) {
     console.error('Failed to handle callback', error.message || error);
     res

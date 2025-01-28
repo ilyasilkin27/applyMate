@@ -11,7 +11,7 @@ export default (req, res) => {
       sameSite: 'None',
     });
 
-    res.redirect('http://localhost:3000');
+    res.redirect('https://apply-mate-ten.vercel.app');
   } catch (error) {
     console.error('Failed to logout', error);
     res.status(500).json({ error: 'Failed to logout' });

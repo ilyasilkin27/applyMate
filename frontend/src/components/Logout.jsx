@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 const Logout = () => {
   const handleLogout = () => {
-    window.location.href = "http://localhost:5000/auth/logout";
+    window.location.href = "https://applymate-auth-service.onrender.com/auth/logout";
   };
 
   return (

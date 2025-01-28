@@ -10,8 +10,8 @@ export default (selectedResumeId, searchKeyword) => {
       setLoading(true);
       try {
         const url = searchKeyword
-          ? `http://localhost:5002/api/vacancies/search?text=${searchKeyword}`
-          : `http://localhost:5002/api/vacancies/${selectedResumeId}/similar_vacancies`;
+          ? `https://applymate-vacancies-service.onrender.com/api/vacancies/search?text=${searchKeyword}`
+          : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`;
 
         const response = await fetch(url, {
           credentials: 'include',
