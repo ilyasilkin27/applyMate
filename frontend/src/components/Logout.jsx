@@ -1,8 +1,10 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import { clearSessionStorage } from '../utils/storageUtils';
 
 const Logout = () => {
   const handleLogout = () => {
+    clearSessionStorage();
     window.location.href = "https://applymate-auth-service.onrender.com/auth/logout";
   };
 

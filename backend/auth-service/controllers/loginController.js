@@ -49,8 +49,6 @@ export const finalizeLogin = async (req, res) => {
 
     const { access_token, refresh_token } = await fetchTokens(code);
 
-    setAuthTokens(res, access_token, refresh_token);
-
     res.redirect(`https://apply-mate-ten.vercel.app/home?access_token=${access_token}&refresh_token=${refresh_token}`);
   } catch (error) {
     console.error('Failed to handle callback', error.message || error);

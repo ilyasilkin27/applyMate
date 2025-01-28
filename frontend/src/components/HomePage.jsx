@@ -10,10 +10,13 @@ import AlertMessage from './AlertMessage';
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
-} from '../utils/localStorageUtils';
+  saveTokensToSessionStorage,
+} from '../utils/storageUtils';
 import { applyAllVacancies, applyVacancy } from '../utils/handleApply';
+import { useLocation } from 'react-router-dom';
 
 const HomePage = () => {
+  const location = useLocation();
   const {
     resumes,
     loading: resumesLoading,
@@ -29,6 +32,17 @@ const HomePage = () => {
   useEffect(() => {
     saveToLocalStorage('coverLetter', coverLetter);
   }, [coverLetter]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get('access_token');
+    const refreshToken = params.get('refresh_token');
+
+    if (accessToken && refreshToken) {
+      saveTokensToSessionStorage(accessToken, refreshToken);
+      window.history.replaceState({}, document.title, '/home');
+    }
+  }, [location]);
 
   const handleApplyVacancy = async (vacancyId) => {
     await applyVacancy(
