@@ -16,12 +16,16 @@ export default (selectedResumeId, searchKeyword) => {
 
         const response = await fetch(url, {
           headers: {
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
           }
         });
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          if(response.status === 502) {
+            throw new Error('Сервис вакансий временно недоступен');
+          }
+          throw new Error('Ошибка сети');
         }
 
         const data = await response.json();
