@@ -17,7 +17,6 @@ const fetchResumesFromAPI = async (accessToken) => {
       host: 'hh.ru',
     },
   });
-  console.log(response.data);
   return response.data;
 };
 
@@ -33,7 +32,6 @@ export default async (req, res) => {
     const resumes = await fetchResumesFromAPI(accessToken);
     res.json(resumes);
   } catch (error) {
-    console.log(error);
     console.error('Failed to fetch resumes', error);
     res.status(500).json({ error: 'Failed to fetch resumes' });
   }

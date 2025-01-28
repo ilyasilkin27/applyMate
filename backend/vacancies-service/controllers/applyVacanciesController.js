@@ -30,8 +30,7 @@ export const applyVacancy = async (req, res) => {
   const { resumeId } = req.params;
   const { vacancyId, coverLetter } = req.body;
   
-  const authHeader = req.headers['authorization'];
-  const accessToken = authHeader && authHeader.split(' ')[1];
+  const accessToken = req.session?.access_token;
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ message: "Unauthorized. No access token found." });
@@ -50,8 +49,7 @@ export const applyAllVacancies = async (req, res) => {
   const { resumeId } = req.params;
   const { vacancies, coverLetter } = req.body;
   
-  const authHeader = req.headers['authorization'];
-  const accessToken = authHeader && authHeader.split(' ')[1];
+  const accessToken = req.session?.access_token;
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ message: "Unauthorized. No access token found." });

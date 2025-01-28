@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const getAccessToken = (req) => {
-  const tokenFromCookies = req.cookies.access_token;
-  const tokenFromSession = req.session?.access_token;
-  return tokenFromCookies || tokenFromSession;
+  return req.session?.access_token;
 };
 
 const buildHeaders = (accessToken) => ({
