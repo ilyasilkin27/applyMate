@@ -7,16 +7,20 @@ export const applyVacancy = async (
   if (!resumeId || !vacancyId) return;
 
   try {
+    const accessToken = sessionStorage.getItem('access_token');
+    
     const response = await fetch(
       `https://applymate-vacancies-service.onrender.com/api/vacancies/${resumeId}/apply_vacancy`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
         body: JSON.stringify({
           vacancyId,
           coverLetter,
-        }),
-        credentials: 'include',
+        })
       }
     );
 
@@ -46,16 +50,20 @@ export const applyAllVacancies = async (
   if (!resumeId || !vacancyIds || vacancyIds.length === 0) return;
 
   try {
+    const accessToken = sessionStorage.getItem('access_token');
+    
     const response = await fetch(
       `https://applymate-vacancies-service.onrender.com/api/vacancies/${resumeId}/apply_all_vacancies`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
         body: JSON.stringify({
           vacancies: vacancyIds.map((id) => ({ id })),
           coverLetter,
-        }),
-        credentials: 'include',
+        })
       }
     );
 

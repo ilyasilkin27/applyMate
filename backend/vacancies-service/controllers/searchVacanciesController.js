@@ -61,7 +61,6 @@ const fetchAllVacancies = async (accessToken, initialPage, queryParams) => {
 };
 
 export default async (req, res) => {
-  // Получаем токен из sessionStorage
   const accessToken = req.session?.access_token;
 
   if (!isAccessTokenValid(accessToken)) {
