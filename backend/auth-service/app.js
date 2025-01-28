@@ -3,12 +3,19 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import routes from "./routes/routes.js";
 
-const app = express();
+export const app = express();
 
 app.use(
   cors({
-    origin: "https://apply-mate-ten.vercel.app",
+    origin: [
+      "https://apply-mate-ten.vercel.app",
+      "https://hh.ru", 
+      "https://api.hh.ru"
+    ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    exposedHeaders: ['Set-Cookie']
   })
 );
 
