@@ -16,6 +16,8 @@ services:
     depends_on:
       - resume-service
       - vacancies-service
+    env_file:
+      - ./.env
 
   resume-service:
     build: ./resume-service
@@ -29,6 +31,8 @@ services:
       - ./resume-service:/app
     networks:
       - backend-network
+    env_file:
+      - ./.env
 
   vacancies-service:
     build: ./vacancies-service
@@ -42,6 +46,8 @@ services:
       - ./vacancies-service:/app
     networks:
       - backend-network
+    env_file:
+      - ./.env
 
   frontend:
     build: ../frontend
