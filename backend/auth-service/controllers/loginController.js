@@ -34,19 +34,10 @@ const fetchTokens = async (code) => {
   return response.data;
 };
 
-const setAuthCookies = (res, access_token, refresh_token) => {
-  res.clearCookie('access_token');
-  res.clearCookie('refresh_token');
-
-  res.cookie('access_token', access_token, {
-    httpOnly: true,
-    secure: 'production',
-    sameSite: 'None',
-  });
-  res.cookie('refresh_token', refresh_token, {
-    httpOnly: true,
-    secure: 'production',
-    sameSite: 'None',
+const setAuthTokens = (res, access_token, refresh_token) => {
+  res.json({
+    access_token,
+    refresh_token
   });
 };
 
@@ -58,9 +49,9 @@ export const finalizeLogin = async (req, res) => {
 
     const { access_token, refresh_token } = await fetchTokens(code);
 
-    setAuthCookies(res, access_token, refresh_token);
+    setAuthTokens(res, access_token, refresh_token);
 
-    res.redirect('https://apply-mate-ten.vercel.app/home');
+    res.redirect(`https://apply-mate-ten.vercel.app/home?access_token=${access_token}&refresh_token=${refresh_token}`);
   } catch (error) {
     console.error('Failed to handle callback', error.message || error);
     res

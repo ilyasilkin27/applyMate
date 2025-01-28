@@ -8,9 +8,15 @@ export default () => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
+        const accessToken = sessionStorage.getItem('access_token');
+        
         const response = await fetch("https://applymate-resume-service.onrender.com/api/resumes/getResumes", {
           credentials: "include",
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
         });
+        
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

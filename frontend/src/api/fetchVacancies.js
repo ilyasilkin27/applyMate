@@ -9,12 +9,15 @@ export default (selectedResumeId, searchKeyword) => {
     const fetchVacancies = async () => {
       setLoading(true);
       try {
+        const accessToken = sessionStorage.getItem('access_token');
         const url = searchKeyword
           ? `https://applymate-vacancies-service.onrender.com/api/vacancies/search?text=${searchKeyword}`
           : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`;
 
         const response = await fetch(url, {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
         });
 
         if (!response.ok) {
