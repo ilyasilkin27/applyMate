@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const getAccessToken = (req) => req.cookies.access_token;
 const isAccessTokenValid = (accessToken) => !!accessToken;
 
 const buildHeaders = (accessToken) => {
@@ -22,7 +21,8 @@ const fetchResumesFromAPI = async (accessToken) => {
 };
 
 export default async (req, res) => {
-  const accessToken = getAccessToken(req);
+  const authHeader = req.headers['authorization'];
+  const accessToken = authHeader && authHeader.split(' ')[1];
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ error: 'No access token provided' });
