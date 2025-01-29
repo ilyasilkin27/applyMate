@@ -26,11 +26,19 @@ const applyToVacancy = async (accessToken, resumeId, vacancyId, coverLetter) => 
   });
 };
 
+const getAccessToken = (req) => {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  return null;
+};
+
 export const applyVacancy = async (req, res) => {
   const { resumeId } = req.params;
   const { vacancyId, coverLetter } = req.body;
   
-  const accessToken = req.session?.access_token;
+  const accessToken = getAccessToken(req);
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ message: "Unauthorized. No access token found." });
@@ -49,7 +57,7 @@ export const applyAllVacancies = async (req, res) => {
   const { resumeId } = req.params;
   const { vacancies, coverLetter } = req.body;
   
-  const accessToken = req.session?.access_token;
+  const accessToken = getAccessToken(req);
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ message: "Unauthorized. No access token found." });

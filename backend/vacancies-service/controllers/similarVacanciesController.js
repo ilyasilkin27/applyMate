@@ -8,8 +8,6 @@ const getAccessToken = (req) => {
   return null;
 };
 
-const isAccessTokenValid = (accessToken) => !!accessToken;
-
 const buildHeaders = (accessToken) => ({
   Authorization: `Bearer ${accessToken}`,
   "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",

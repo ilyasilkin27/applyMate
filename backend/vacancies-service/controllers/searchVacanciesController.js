@@ -60,8 +60,16 @@ const fetchAllVacancies = async (accessToken, initialPage, queryParams) => {
   return allResults;
 };
 
+const getAccessToken = (req) => {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  return null;
+};
+
 export default async (req, res) => {
-  const accessToken = req.session?.access_token;
+  const accessToken = getAccessToken(req);
 
   if (!isAccessTokenValid(accessToken)) {
     return res.status(401).json({ message: 'Unauthorized. No access token found.' });
