@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken, buildHeaders, buildQueryParams } from "../utils/apiUtils";
+import { getAccessToken, buildHeaders, buildQueryParams } from "../utils/apiUtils.js";
 
 const fetchSimilarVacanciesPage = async (
   accessToken,

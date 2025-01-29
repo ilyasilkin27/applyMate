@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken, isAccessTokenValid, buildHeaders, buildQueryParams } from "../utils/apiUtils";
+import { getAccessToken, isAccessTokenValid, buildHeaders, buildQueryParams } from "../utils/apiUtils.js";
 
 const fetchVacanciesPage = async (accessToken, page, queryParams) => {
   const response = await axios.get('https://api.hh.ru/vacancies', {

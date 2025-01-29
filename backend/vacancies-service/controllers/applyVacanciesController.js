@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken, isAccessTokenValid, buildHeaders } from "../utils/apiUtils";
+import { getAccessToken, isAccessTokenValid, buildHeaders } from "../utils/apiUtils.js";
 
 const buildFormData = (resumeId, vacancyId, coverLetter) => {
   const formData = new URLSearchParams();
