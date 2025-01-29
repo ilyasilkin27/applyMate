@@ -1,41 +1,5 @@
 import axios from "axios";
-
-const isAccessTokenValid = (accessToken) => !!accessToken;
-
-const buildHeaders = (accessToken) => ({
-  Authorization: `Bearer ${accessToken}`,
-  'HH-User-Agent': 'ApplyMate/1.0 (ilyasilkin27@gmail.com)',
-});
-
-const buildQueryParams = (req) => {
-  const {
-    per_page = 100,
-    page = 0,
-    text,
-    experience,
-    employment,
-    schedule,
-    area,
-    currency,
-    salary,
-    only_with_salary = false,
-    order_by,
-  } = req.query;
-
-  return {
-    per_page,
-    page,
-    text,
-    experience,
-    employment,
-    schedule,
-    area,
-    currency,
-    salary,
-    only_with_salary,
-    order_by,
-  };
-};
+import { getAccessToken, isAccessTokenValid, buildHeaders, buildQueryParams } from "../utils/apiUtils";
 
 const fetchVacanciesPage = async (accessToken, page, queryParams) => {
   const response = await axios.get('https://api.hh.ru/vacancies', {
@@ -58,14 +22,6 @@ const fetchAllVacancies = async (accessToken, initialPage, queryParams) => {
   }
 
   return allResults;
-};
-
-const getAccessToken = (req) => {
-  const authHeader = req.headers['authorization'];
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    return authHeader.split(' ')[1];
-  }
-  return null;
 };
 
 export default async (req, res) => {

@@ -1,12 +1,5 @@
 import axios from "axios";
-
-const isAccessTokenValid = (accessToken) => !!accessToken;
-
-const buildHeaders = (accessToken) => ({
-  Authorization: `Bearer ${accessToken}`,
-  "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
-  "Content-Type": "application/x-www-form-urlencoded",
-});
+import { getAccessToken, isAccessTokenValid, buildHeaders } from "../utils/apiUtils";
 
 const buildFormData = (resumeId, vacancyId, coverLetter) => {
   const formData = new URLSearchParams();
@@ -24,14 +17,6 @@ const applyToVacancy = async (accessToken, resumeId, vacancyId, coverLetter) => 
   await axios.post("https://api.hh.ru/negotiations", formData, {
     headers: buildHeaders(accessToken),
   });
-};
-
-const getAccessToken = (req) => {
-  const authHeader = req.headers['authorization'];
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    return authHeader.split(' ')[1];
-  }
-  return null;
 };
 
 export const applyVacancy = async (req, res) => {

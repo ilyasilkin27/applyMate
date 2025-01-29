@@ -1,41 +1,5 @@
 import axios from "axios";
-
-const getAccessToken = (req) => {
-  const authHeader = req.headers['authorization'];
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    return authHeader.split(' ')[1];
-  }
-  return null;
-};
-
-const buildHeaders = (accessToken) => ({
-  Authorization: `Bearer ${accessToken}`,
-  "HH-User-Agent": "ApplyMate/1.0 (ilyasilkin27@gmail.com)",
-});
-
-const buildQueryParams = (req) => {
-  const {
-    per_page = 100,
-    text,
-    experience,
-    employment,
-    schedule,
-    area,
-    currency,
-    salary,
-  } = req.query;
-
-  return {
-    per_page,
-    text,
-    experience,
-    employment,
-    schedule,
-    area,
-    currency,
-    salary,
-  };
-};
+import { getAccessToken, buildHeaders, buildQueryParams } from "../utils/apiUtils";
 
 const fetchSimilarVacanciesPage = async (
   accessToken,
