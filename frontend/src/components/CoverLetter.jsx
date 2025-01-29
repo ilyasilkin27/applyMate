@@ -11,7 +11,7 @@ const CoverLetter = ({ value, onChange }) => (
       rows={3}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Enter your cover letter here..."
+      placeholder="Введите ваше сопроводительное письмо здесь..."
     />
   </Form.Group>
 );
