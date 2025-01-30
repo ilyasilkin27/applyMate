@@ -47,15 +47,15 @@ const SearchVacancies = ({ selectedResumeId, onApply }) => {
 
       {hasSearchResults && (
         <>
-          <VacancyList vacancies={vacancies} onApply={onApply} />
           <Button 
             variant="primary" 
             onClick={handleApplyAll}
             disabled={isApplying || vacancies.length === 0}
-            className="mt-3"
+            className="mb-3"
           >
             {isApplying ? 'Applying...' : 'Apply to All'}
           </Button>
+          <VacancyList vacancies={vacancies} onApply={onApply} />
         </>
       )}
 
