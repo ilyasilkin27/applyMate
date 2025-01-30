@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
-import { Form, Spinner, Alert } from 'react-bootstrap';
+import { Form, Spinner, Alert, Button } from 'react-bootstrap';
 import VacancyList from './VacancyList';
 import useFetchVacancies from '../api/fetchVacancies';
+import { applyAllVacancies } from '../utils/handleApply';
 
 const SearchVacancies = ({ selectedResumeId, onApply }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [isApplying, setIsApplying] = useState(false);
+  const [applyError, setApplyError] = useState(null);
   const { vacancies, loading, error } = useFetchVacancies(
     selectedResumeId,
     searchKeyword
   );
 
   const hasSearchResults = searchKeyword && vacancies.length > 0;
+
+  const handleApplyAll = async () => {
+    if (!selectedResumeId || vacancies.length === 0) return;
+    
+    setIsApplying(true);
+    setApplyError(null);
+    
+    const vacancyIds = vacancies.map(v => v.id);
+    await applyAllVacancies(selectedResumeId, vacancyIds, '', setApplyError);
+    
+    setIsApplying(false);
+    if (!applyError) {
+      alert('Successfully applied to all vacancies!');
+    }
+  };
 
   return (
     <div>
@@ -25,9 +43,20 @@ const SearchVacancies = ({ selectedResumeId, onApply }) => {
 
       {loading && <Spinner animation="border" />}
       {error && <Alert variant="danger">{error}</Alert>}
+      {applyError && <Alert variant="warning">{applyError}</Alert>}
 
       {hasSearchResults && (
-        <VacancyList vacancies={vacancies} onApply={onApply} />
+        <>
+          <VacancyList vacancies={vacancies} onApply={onApply} />
+          <Button 
+            variant="primary" 
+            onClick={handleApplyAll}
+            disabled={isApplying || vacancies.length === 0}
+            className="mt-3"
+          >
+            {isApplying ? 'Applying...' : 'Apply to All'}
+          </Button>
+        </>
       )}
 
       {searchKeyword && !loading && !error && vacancies.length === 0 && (
