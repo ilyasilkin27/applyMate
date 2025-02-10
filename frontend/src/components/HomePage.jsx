@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
-import Logout from './Logout';
-import ResumeSelection from './ResumeSelection';
-import CoverLetter from './CoverLetter';
-import RecommendedVacancies from './RecommendedVacancies';
-import useFetchResumes from '../api/fetchResumes';
-import SearchVacancies from './SearchVacancies';
-import AlertMessage from './AlertMessage';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
+import Logout from "./Logout";
+import ResumeSelection from "./ResumeSelection";
+import CoverLetter from "./CoverLetter";
+import RecommendedVacancies from "./RecommendedVacancies";
+import useFetchResumes from "../api/fetchResumes";
+import SearchVacancies from "./SearchVacancies";
+import AlertMessage from "./AlertMessage";
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
   saveTokensToSessionStorage,
-} from '../utils/storageUtils';
-import { applyAllVacancies, applyVacancy } from '../utils/handleApply';
-import { useLocation } from 'react-router-dom';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+} from "../utils/storageUtils";
+import { applyAllVacancies, applyVacancy } from "../utils/handleApply";
+import { useLocation } from "react-router-dom";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const HomePage = () => {
   const location = useLocation();
@@ -25,31 +25,31 @@ const HomePage = () => {
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [coverLetters, setCoverLetters] = useState(
-    loadFromLocalStorage('coverLetters', {})
+    loadFromLocalStorage("coverLetters", {})
   );
   const [customAlert, setCustomAlert] = useState(null);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [showCoverLetterModal, setShowCoverLetterModal] = useState(false);
 
   useEffect(() => {
-    saveToLocalStorage('coverLetters', coverLetters);
+    saveToLocalStorage("coverLetters", coverLetters);
   }, [coverLetters]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const accessToken = params.get('access_token');
-    const refreshToken = params.get('refresh_token');
+    const accessToken = params.get("access_token");
+    const refreshToken = params.get("refresh_token");
 
     if (accessToken && refreshToken) {
       saveTokensToSessionStorage(accessToken, refreshToken);
-      window.history.replaceState({}, document.title, '/home');
+      window.history.replaceState({}, document.title, "/home");
     }
   }, [location]);
 
   const handleCoverLetterChange = (resumeId, text) => {
-    setCoverLetters(prev => ({
+    setCoverLetters((prev) => ({
       ...prev,
-      [resumeId]: text
+      [resumeId]: text,
     }));
   };
 
@@ -57,7 +57,7 @@ const HomePage = () => {
     await applyVacancy(
       selectedResumeId,
       vacancyId,
-      coverLetters[selectedResumeId] || '',
+      coverLetters[selectedResumeId] || "",
       setCustomAlert
     );
   };
@@ -66,17 +66,23 @@ const HomePage = () => {
     await applyAllVacancies(
       selectedResumeId,
       vacancyIds,
-      coverLetters[selectedResumeId] || '',
+      coverLetters[selectedResumeId] || "",
       setCustomAlert
     );
   };
 
   return (
-    <Container fluid className="p-4 min-vh-100" style={{ backgroundColor: '#f8f9fa' }}>
+    <Container
+      fluid
+      className="p-4 min-vh-100"
+      style={{ backgroundColor: "#f8f9fa" }}
+    >
       <Card className="shadow-sm mb-4">
         <Card.Body className="p-4">
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h1 className="mb-0" style={{ color: '#0d6efd' }}>ApplyMate</h1>
+            <h1 className="mb-0" style={{ color: "#0d6efd" }}>
+              ApplyMate
+            </h1>
             <Logout />
           </div>
 
@@ -86,6 +92,13 @@ const HomePage = () => {
             error={resumesError}
             onSelect={setSelectedResumeId}
           />
+          <Button
+            variant="light"
+            onClick={() => setShowCoverLetterModal(true)}
+            className="p-1"
+          >
+            <BsThreeDotsVertical size={20} />
+          </Button>
         </Card.Body>
       </Card>
 
@@ -99,7 +112,7 @@ const HomePage = () => {
                   searchKeyword={searchKeyword}
                   setSearchKeyword={setSearchKeyword}
                   onApply={handleApplyVacancy}
-                  coverLetter={coverLetters[selectedResumeId] || ''}
+                  coverLetter={coverLetters[selectedResumeId] || ""}
                 />
               </Card.Body>
             </Card>
@@ -110,17 +123,10 @@ const HomePage = () => {
               <Card.Body className="p-4">
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5>Рекомендованные вакансии</h5>
-                  <Button 
-                    variant="light" 
-                    onClick={() => setShowCoverLetterModal(true)}
-                    className="p-1"
-                  >
-                    <BsThreeDotsVertical size={20} />
-                  </Button>
                 </div>
                 <RecommendedVacancies
                   selectedResumeId={selectedResumeId}
-                  coverLetter={coverLetters[selectedResumeId] || ''}
+                  coverLetter={coverLetters[selectedResumeId] || ""}
                   onApply={handleApplyAllVacancies}
                   onApplyAll={handleApplyAllVacancies}
                 />
@@ -141,7 +147,7 @@ const HomePage = () => {
         </Modal.Header>
         <Modal.Body>
           <CoverLetter
-            value={coverLetters[selectedResumeId] || ''}
+            value={coverLetters[selectedResumeId] || ""}
             onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
           />
         </Modal.Body>

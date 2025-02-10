@@ -1,66 +1,70 @@
 import React, { useState } from "react";
-import { ListGroup, Button } from "react-bootstrap";
+import { Card, Button, Badge, Stack } from "react-bootstrap";
 
 const VacancyList = ({ vacancies, onApply }) => {
   const [appliedVacancies, setAppliedVacancies] = useState([]);
 
   const handleApply = (vacancyId) => {
     onApply(vacancyId);
-
     setAppliedVacancies((prev) => [...prev, vacancyId]);
   };
 
   return (
-    <div style={{ maxHeight: "495px", overflowY: "scroll" }}>
-      <ListGroup>
+    <div style={{ maxHeight: "495px", overflowY: "auto" }} className="p-3">
+      <Stack gap={3}>
         {vacancies.map((vacancy) => {
           const isApplied = appliedVacancies.includes(vacancy.id);
 
           return (
-            <ListGroup.Item
+            <Card
               key={vacancy.id}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                opacity: isApplied ? 0.5 : 1,
-                backgroundColor: isApplied ? "#f8f9fa" : "white",
-                transition: "opacity 0.3s ease-in-out",
-              }}
+              className={`shadow-sm ${isApplied ? "opacity-50" : ""}`}
             >
-              <div>
-                <h5>{vacancy.name}</h5>
-                <p>{vacancy.employer?.name || "Unknown Company"}</p>
-                <p>
-                  <strong>Salary:</strong>{" "}
-                  {vacancy.salary
-                    ? `${vacancy.salary.from} - ${vacancy.salary.to} ${vacancy.salary.currency}`
-                    : "Not specified"}
-                </p>
-                <p>
-                  <strong>Published at:</strong>{" "}
+              <Card.Body>
+                <div className="d-flex justify-content-between align-items-start">
+                  <div>
+                    <Card.Title className="mb-2">{vacancy.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {vacancy.employer?.name || "Неизвестная компания"}
+                    </Card.Subtitle>
+                  </div>
+                  <Badge bg="light" text="dark" className="fs-6">
+                    {vacancy.salary
+                      ? `${vacancy.salary.from} - ${vacancy.salary.to} ${vacancy.salary.currency}`
+                      : "Зарплата не указана"}
+                  </Badge>
+                </div>
+
+                <Card.Text className="text-muted small mb-3">
+                  Опубликовано:{" "}
                   {new Date(vacancy.published_at).toLocaleDateString()}
-                </p>
-                <a
-                  href={vacancy.alternate_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Vacancy
-                </a>
-              </div>
-              <Button
-                variant="primary"
-                className="mt-3"
-                onClick={() => handleApply(vacancy.id)}
-                style={{ width: "200px" }}
-                disabled={isApplied}
-              >
-                {isApplied ? "Applied" : "Apply"}
-              </Button>
-            </ListGroup.Item>
+                </Card.Text>
+
+                <div className="d-flex justify-content-between align-items-center">
+                  <Button
+                    variant="outline-primary"
+                    size="sm"
+                    href={vacancy.alternate_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Посмотреть вакансию
+                  </Button>
+
+                  <Button
+                    variant={isApplied ? "outline-success" : "primary"}
+                    size="sm"
+                    onClick={() => handleApply(vacancy.id)}
+                    disabled={isApplied}
+                  >
+                    {isApplied ? "Отправлено" : "Откликнуться"}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
           );
         })}
-      </ListGroup>
+      </Stack>
     </div>
   );
 };
