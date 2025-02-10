@@ -92,12 +92,14 @@ const HomePage = () => {
             error={resumesError}
             onSelect={setSelectedResumeId}
           />
-          <Button
-            variant="light"
+          <Button 
+            variant="outline-primary"
+            size="sm"
             onClick={() => setShowCoverLetterModal(true)}
-            className="p-1"
+            className="ms-2"
           >
-            <BsThreeDotsVertical size={20} />
+            <i className="bi bi-pencil-square me-2"></i>
+            Сопроводительное письмо
           </Button>
         </Card.Body>
       </Card>
