@@ -23,15 +23,15 @@ const HomePage = () => {
     error: resumesError,
   } = useFetchResumes();
   const [selectedResumeId, setSelectedResumeId] = useState(null);
-  const [coverLetter, setCoverLetter] = useState(
-    loadFromLocalStorage('coverLetter', '')
+  const [coverLetters, setCoverLetters] = useState(
+    loadFromLocalStorage('coverLetters', {})
   );
   const [customAlert, setCustomAlert] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState('');
 
   useEffect(() => {
-    saveToLocalStorage('coverLetter', coverLetter);
-  }, [coverLetter]);
+    saveToLocalStorage('coverLetters', coverLetters);
+  }, [coverLetters]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -44,11 +44,18 @@ const HomePage = () => {
     }
   }, [location]);
 
+  const handleCoverLetterChange = (resumeId, text) => {
+    setCoverLetters(prev => ({
+      ...prev,
+      [resumeId]: text
+    }));
+  };
+
   const handleApplyVacancy = async (vacancyId) => {
     await applyVacancy(
       selectedResumeId,
       vacancyId,
-      coverLetter,
+      coverLetters[selectedResumeId] || '',
       setCustomAlert
     );
   };
@@ -57,7 +64,7 @@ const HomePage = () => {
     await applyAllVacancies(
       selectedResumeId,
       vacancyIds,
-      coverLetter,
+      coverLetters[selectedResumeId] || '',
       setCustomAlert
     );
   };
@@ -78,12 +85,15 @@ const HomePage = () => {
 
       {selectedResumeId && (
         <>
-          <CoverLetter value={coverLetter} onChange={setCoverLetter} />
+          <CoverLetter
+            value={coverLetters[selectedResumeId] || ''}
+            onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
+          />
           <Row className="mt-4">
             <Col md={6}>
               <RecommendedVacancies
                 selectedResumeId={selectedResumeId}
-                coverLetter={coverLetter}
+                coverLetter={coverLetters[selectedResumeId] || ''}
                 onApply={handleApplyAllVacancies}
                 onApplyAll={handleApplyAllVacancies}
               />
@@ -95,7 +105,7 @@ const HomePage = () => {
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
                 onApply={handleApplyVacancy}
-                coverLetter={coverLetter}
+                coverLetter={coverLetters[selectedResumeId] || ''}
               />
             </Col>
           </Row>
