@@ -1,42 +1,32 @@
 import React, { useState } from "react";
-import { ListGroup } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 const ResumeList = ({ resumes, onSelect }) => {
   const [selectedResumeId, setSelectedResumeId] = useState(null);
 
-  const handleSelect = (id) => {
+  const handleSelect = (e) => {
+    const id = e.target.value;
     setSelectedResumeId(id);
     onSelect(id);
   };
 
   return (
-    <ListGroup>
+    <Form.Select 
+      aria-label="Выберите резюме" 
+      onChange={handleSelect}
+      value={selectedResumeId || ""}
+      className="mb-3"
+    >
+      <option value="">Выберите резюме</option>
       {resumes.map((resume) => (
-        <ListGroup.Item
-          key={resume.id}
-          onClick={() => handleSelect(resume.id)}
-          style={{
-            cursor: "pointer",
-            backgroundColor: selectedResumeId === resume.id ? "#0d6efd" : "",
-          }}
+        <option 
+          key={resume.id} 
+          value={resume.id}
         >
-          <h5
-            style={{
-              color: selectedResumeId === resume.id ? "white" : "",
-            }}
-          >
-            {resume.title}
-          </h5>
-          <p
-            style={{
-              color: selectedResumeId === resume.id ? "white" : "",
-            }}
-          >
-            {resume.first_name} {resume.middle_name} {resume.last_name}
-          </p>
-        </ListGroup.Item>
+          {resume.title} - {resume.first_name} {resume.middle_name} {resume.last_name}
+        </option>
       ))}
-    </ListGroup>
+    </Form.Select>
   );
 };
 
