@@ -91,27 +91,7 @@ const HomePage = () => {
 
       {selectedResumeId && (
         <Row className="g-4">
-          <Col lg={8}>
-            <Card className="shadow-sm h-100">
-              <Card.Body className="p-4">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h5>Сопроводительное письмо</h5>
-                  <Button 
-                    variant="light" 
-                    onClick={() => setShowCoverLetterModal(true)}
-                    className="p-1"
-                  >
-                    <BsThreeDotsVertical size={20} />
-                  </Button>
-                </div>
-                <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
-                  {coverLetters[selectedResumeId] || 'Сопроводительное письмо не добавлено'}
-                </p>
-              </Card.Body>
-            </Card>
-          </Col>
-          
-          <Col lg={4}>
+          <Col lg={6}>
             <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
                 <SearchVacancies
@@ -125,9 +105,19 @@ const HomePage = () => {
             </Card>
           </Col>
 
-          <Col xs={12}>
-            <Card className="shadow-sm">
+          <Col lg={6}>
+            <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5>Рекомендованные вакансии</h5>
+                  <Button 
+                    variant="light" 
+                    onClick={() => setShowCoverLetterModal(true)}
+                    className="p-1"
+                  >
+                    <BsThreeDotsVertical size={20} />
+                  </Button>
+                </div>
                 <RecommendedVacancies
                   selectedResumeId={selectedResumeId}
                   coverLetter={coverLetters[selectedResumeId] || ''}
