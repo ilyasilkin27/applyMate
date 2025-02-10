@@ -17,9 +17,6 @@ const CoverLetter = ({ value, onChange }) => (
         className="border-primary"
       />
     </FloatingLabel>
-    <small className="text-muted">
-      Максимально персонализируйте письмо под вакансию
-    </small>
   </div>
 );
 
