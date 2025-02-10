@@ -14,7 +14,6 @@ import {
 } from "../utils/storageUtils";
 import { applyAllVacancies, applyVacancy } from "../utils/handleApply";
 import { useLocation } from "react-router-dom";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
 const HomePage = () => {
   const location = useLocation();

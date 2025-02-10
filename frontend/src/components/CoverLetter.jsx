@@ -6,7 +6,7 @@ const CoverLetter = ({ value, onChange }) => (
     <h4 className="mb-3 text-primary">Сопроводительное письмо</h4>
     <FloatingLabel 
       controlId="coverLetter"
-      label="Введите текст письма..."
+      label={value ? "" : "Введите текст письма..."}
       className="mb-3"
     >
       <Form.Control
