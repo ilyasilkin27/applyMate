@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import Logout from './Logout';
 import ResumeSelection from './ResumeSelection';
 import CoverLetter from './CoverLetter';
@@ -14,6 +14,7 @@ import {
 } from '../utils/storageUtils';
 import { applyAllVacancies, applyVacancy } from '../utils/handleApply';
 import { useLocation } from 'react-router-dom';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 const HomePage = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const HomePage = () => {
   );
   const [customAlert, setCustomAlert] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [showCoverLetterModal, setShowCoverLetterModal] = useState(false);
 
   useEffect(() => {
     saveToLocalStorage('coverLetters', coverLetters);
@@ -92,10 +94,19 @@ const HomePage = () => {
           <Col lg={8}>
             <Card className="shadow-sm h-100">
               <Card.Body className="p-4">
-                <CoverLetter
-                  value={coverLetters[selectedResumeId] || ''}
-                  onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
-                />
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h5>Сопроводительное письмо</h5>
+                  <Button 
+                    variant="light" 
+                    onClick={() => setShowCoverLetterModal(true)}
+                    className="p-1"
+                  >
+                    <BsThreeDotsVertical size={20} />
+                  </Button>
+                </div>
+                <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
+                  {coverLetters[selectedResumeId] || 'Сопроводительное письмо не добавлено'}
+                </p>
               </Card.Body>
             </Card>
           </Col>
@@ -129,6 +140,22 @@ const HomePage = () => {
           </Col>
         </Row>
       )}
+
+      <Modal
+        show={showCoverLetterModal}
+        onHide={() => setShowCoverLetterModal(false)}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Редактировать сопроводительное письмо</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <CoverLetter
+            value={coverLetters[selectedResumeId] || ''}
+            onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
+          />
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };
