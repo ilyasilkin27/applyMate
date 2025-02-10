@@ -1,19 +1,26 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, FloatingLabel } from 'react-bootstrap';
 
 const CoverLetter = ({ value, onChange }) => (
-  <Form.Group controlId="coverLetter" className="mt-3">
-    <Form.Label>
-      <h4>Cover Letter</h4>
-    </Form.Label>
-    <Form.Control
-      as="textarea"
-      rows={3}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="Введите ваше сопроводительное письмо здесь..."
-    />
-  </Form.Group>
+  <div className="mt-4 p-3 bg-light rounded-3 shadow-sm">
+    <h4 className="mb-3 text-primary">Сопроводительное письмо</h4>
+    <FloatingLabel 
+      controlId="coverLetter"
+      label="Введите текст письма..."
+      className="mb-3"
+    >
+      <Form.Control
+        as="textarea"
+        style={{ height: '150px', resize: 'none' }}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="border-primary"
+      />
+    </FloatingLabel>
+    <small className="text-muted">
+      Максимально персонализируйте письмо под вакансию
+    </small>
+  </div>
 );
 
 export default CoverLetter;
