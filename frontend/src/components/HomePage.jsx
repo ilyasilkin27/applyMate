@@ -95,6 +95,7 @@ const HomePage = () => {
                 searchKeyword={searchKeyword}
                 setSearchKeyword={setSearchKeyword}
                 onApply={handleApplyVacancy}
+                coverLetter={coverLetter}
               />
             </Col>
           </Row>
