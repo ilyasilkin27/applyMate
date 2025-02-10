@@ -1,6 +1,7 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { clearSessionStorage } from '../utils/storageUtils';
+import { BoxArrowRight } from 'react-bootstrap-icons';
 
 const Logout = () => {
   const handleLogout = () => {
@@ -9,11 +10,16 @@ const Logout = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center ms-5 align-items-center">
-      <Button variant="danger" onClick={handleLogout}>
-        Logout
+    <Card className="border-0 shadow-sm rounded-3 p-2 bg-light">
+      <Button 
+        variant="outline-danger" 
+        onClick={handleLogout}
+        className="d-flex align-items-center gap-2 fw-medium"
+      >
+        <BoxArrowRight size={18} />
+        <span>Выйти</span>
       </Button>
-    </div>
+    </Card>
   );
 };
 
