@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import Logout from './Logout';
 import ResumeSelection from './ResumeSelection';
 import CoverLetter from './CoverLetter';
@@ -70,46 +70,64 @@ const HomePage = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <div className="d-flex justify-content-center align-items-center mb-3">
-        <h1>ApplyMate</h1>
-        <Logout />
-      </div>
+    <Container fluid className="p-4 min-vh-100" style={{ backgroundColor: '#f8f9fa' }}>
+      <Card className="shadow-sm mb-4">
+        <Card.Body className="p-4">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h1 className="mb-0" style={{ color: '#0d6efd' }}>ApplyMate</h1>
+            <Logout />
+          </div>
 
-      <ResumeSelection
-        resumes={resumes}
-        loading={resumesLoading}
-        error={resumesError}
-        onSelect={setSelectedResumeId}
-      />
+          <ResumeSelection
+            resumes={resumes}
+            loading={resumesLoading}
+            error={resumesError}
+            onSelect={setSelectedResumeId}
+          />
+        </Card.Body>
+      </Card>
 
       {selectedResumeId && (
-        <>
-          <CoverLetter
-            value={coverLetters[selectedResumeId] || ''}
-            onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
-          />
-          <Row className="mt-4">
-            <Col md={6}>
-              <RecommendedVacancies
-                selectedResumeId={selectedResumeId}
-                coverLetter={coverLetters[selectedResumeId] || ''}
-                onApply={handleApplyAllVacancies}
-                onApplyAll={handleApplyAllVacancies}
-              />
-              <AlertMessage message={customAlert} variant="warning" />
-            </Col>
-            <Col md={6}>
-              <SearchVacancies
-                selectedResumeId={selectedResumeId}
-                searchKeyword={searchKeyword}
-                setSearchKeyword={setSearchKeyword}
-                onApply={handleApplyVacancy}
-                coverLetter={coverLetters[selectedResumeId] || ''}
-              />
-            </Col>
-          </Row>
-        </>
+        <Row className="g-4">
+          <Col lg={8}>
+            <Card className="shadow-sm h-100">
+              <Card.Body className="p-4">
+                <CoverLetter
+                  value={coverLetters[selectedResumeId] || ''}
+                  onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+          
+          <Col lg={4}>
+            <Card className="shadow-sm h-100">
+              <Card.Body className="p-4">
+                <SearchVacancies
+                  selectedResumeId={selectedResumeId}
+                  searchKeyword={searchKeyword}
+                  setSearchKeyword={setSearchKeyword}
+                  onApply={handleApplyVacancy}
+                  coverLetter={coverLetters[selectedResumeId] || ''}
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col xs={12}>
+            <Card className="shadow-sm">
+              <Card.Body className="p-4">
+                <RecommendedVacancies
+                  selectedResumeId={selectedResumeId}
+                  coverLetter={coverLetters[selectedResumeId] || ''}
+                  onApply={handleApplyAllVacancies}
+                  onApplyAll={handleApplyAllVacancies}
+                />
+                <AlertMessage message={customAlert} variant="warning" />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       )}
     </Container>
   );
