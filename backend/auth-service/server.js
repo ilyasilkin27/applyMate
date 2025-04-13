@@ -1,7 +1,5 @@
 import app from './app.js';
 
-const PORT = 5000;
-
-app.listen(PORT, () => {
-  console.log(`Auth service running on port ${PORT}`);
+app.listen(5000, () => {
+  console.log(`Auth service running on port 5000`);
 });

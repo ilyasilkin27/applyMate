@@ -34,13 +34,6 @@ const fetchTokens = async (code) => {
   return response.data;
 };
 
-const setAuthTokens = (res, access_token, refresh_token) => {
-  res.json({
-    access_token,
-    refresh_token
-  });
-};
-
 export const finalizeLogin = async (req, res) => {
   try {
     const { code } = req.query;
