@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Card, Form } from "react-bootstrap";
+import { Container, Button, Card } from "react-bootstrap";
 import { LockFill } from "react-bootstrap-icons";
 
 const Login = () => {
