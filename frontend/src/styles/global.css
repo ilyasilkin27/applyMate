@@ -1,0 +1,71 @@
+@layer reset, base, tokens, recipes, utilities;
+
+@layer reset {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    color: var(--colors-gray-900);
+    background-color: var(--colors-gray-50);
+  }
+
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font: inherit;
+  }
+
+  input, textarea, select {
+    font: inherit;
+  }
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    color: var(--colors-primary);
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  input, textarea, select {
+    padding: 0.5rem;
+    border: 1px solid var(--colors-gray-300);
+    border-radius: 0.25rem;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: var(--colors-primary);
+      box-shadow: 0 0 0 2px var(--colors-primary-100);
+    }
+  }
+} 

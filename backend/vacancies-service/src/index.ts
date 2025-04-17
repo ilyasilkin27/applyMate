@@ -12,4 +12,4 @@ const app = new Elysia()
   .use(vacanciesRoutes)
   .listen(3002);
 
-console.log(`🦊 Vacancies service is running at ${app.server?.hostname}:${app.server?.port}`); 
+console.log(`Vacancies service is running at ${app.server?.hostname}:${app.server?.port}`); 
