@@ -1,13 +1,12 @@
-FROM node:18
+FROM oven/bun:1
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
+COPY package.json .
+RUN bun install
 
 COPY . .
 
 EXPOSE 5001
 
-CMD ["node", "server.js"]
+CMD ["bun", "run", "src/index.ts"]

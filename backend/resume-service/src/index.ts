@@ -1,12 +1,9 @@
-import express from "express";
-import routes from "./routes/routes.js";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+import { Elysia } from 'elysia'
+import { cors } from '@elysiajs/cors'
+import { resumeRoutes } from './routes/resume.routes'
 
-const app = express();
-
-app.use(
-  cors({
+const app = new Elysia()
+  .use(cors({
     origin: [
       "https://apply-mate-ten.vercel.app",
       "https://hh.ru", 
@@ -16,12 +13,8 @@ app.use(
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
     exposedHeaders: ['Set-Cookie']
-  })
-);
+  }))
+  .use(resumeRoutes)
+  .listen(5001)
 
-app.use(cookieParser());
-app.use(express.json());
-
-app.use("/api/resumes", routes);
-
-export default app;
+console.log(`Resume service is running at ${app.server?.hostname}:${app.server?.port}`) 
