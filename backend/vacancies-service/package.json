@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
-    "build": "bun build ./src/index.ts --outdir ./dist"
+    "build": "mkdir -p build && bun build src/index.ts --outdir build"
   },
   "dependencies": {
     "@elysiajs/cors": "^0.7.1",

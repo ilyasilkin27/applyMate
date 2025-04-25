@@ -1,13 +1,21 @@
-FROM node:18
+FROM oven/bun:latest AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json bun.lock ./
 
-RUN npm install
+RUN bun install
 
 COPY . .
 
+RUN bun run build
+
+FROM oven/bun:latest
+
+WORKDIR /app
+
+COPY --from=build /app/build /app/build
+
 EXPOSE 5002
 
-CMD ["node", "server.js"]
+CMD ["bun", "run", "start"]

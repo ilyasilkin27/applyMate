@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun --watch run src/index.ts"
+    "dev": "bun --watch run src/index.ts",
+    "build": "mkdir -p build && bun build src/index.ts --outdir build"
   },
   "dependencies": {
     "@elysiajs/cookie": "^0.7.0",
