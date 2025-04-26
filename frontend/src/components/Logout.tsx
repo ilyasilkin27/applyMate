@@ -1,4 +1,3 @@
-import { BoxArrowRight } from 'react-bootstrap-icons';
 import { clearSessionStorage } from '../utils/storageUtils';
 import { css } from '../../styled-system/css';
 
@@ -35,7 +34,6 @@ const Logout = () => {
           }
         })}
       >
-        <BoxArrowRight size={18} />
         <span>Выйти</span>
       </button>
     </div>
