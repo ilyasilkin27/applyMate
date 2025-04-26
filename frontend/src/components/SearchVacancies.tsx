@@ -1,4 +1,3 @@
-import { Search } from 'react-bootstrap-icons';
 import { css } from '../../styled-system/css';
 
 interface SearchVacanciesProps {
@@ -54,15 +53,6 @@ const SearchVacancies = ({ searchKeyword, setSearchKeyword }: SearchVacanciesPro
                 }
               })}
             />
-            <Search className={css({
-              position: 'absolute',
-              left: '3',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: 'gray.400',
-              width: '5',
-              height: '5'
-            })} />
           </div>
         </div>
       </div>
