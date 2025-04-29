@@ -4,6 +4,7 @@ export default () => {
   const [resumes, setResumes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     let isMounted = true
@@ -18,7 +19,7 @@ export default () => {
         )
         if (!response.ok) {
           if (response.status === 500 && retryCount < 3) {
-            setTimeout(() => setRetryCount((c) => c + 1), 500)
+            setTimeout(() => setRetryCount((c) => c + 1), 1000)
             return
           }
           throw new Error('Network response was not ok')
