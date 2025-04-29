@@ -11,7 +11,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        hhred: '#d6001c',
+        hhred: '#D6001C',
+        'hhred-dark': '#B80018',
         hhgray: '#f5f6f7',
         hhgray2: '#e5e6e7',
         hhtext: '#222426',
