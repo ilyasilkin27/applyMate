@@ -51,13 +51,13 @@ export const finalizeLogin = async (
     return Response.redirect(
       `https://apply-mate-ten.vercel.app/home?access_token=${access_token}&refresh_token=${refresh_token}`
     )
-  } catch (error: any) {
-    console.error('Failed to handle callback', error.message || error)
-    const status =
-      error.message === 'No authorization code provided' ? 400 : 500
+  } catch (error) {
+    const err = error as Error
+    console.error('Failed to handle callback', err.message)
+    const status = err.message === 'No authorization code provided' ? 400 : 500
     return new Response(
       JSON.stringify({
-        error: error.message || 'Failed to exchange authorization code',
+        error: err.message || 'Failed to exchange authorization code',
       }),
       { status, headers: { 'Content-Type': 'application/json' } }
     )

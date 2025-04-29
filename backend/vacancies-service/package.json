@@ -1,12 +1,14 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "bun run server.ts"
   },
   "dependencies": {
-    "axios": "^1.7.9",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "@elysiajs/cors": "^1.2.0",
+    "elysia": "^1.2.25",
+    "ky": "^1.8.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }
