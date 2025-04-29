@@ -1,6 +1,6 @@
-import React from 'react';
-import { Alert, Spinner, Card, Container } from 'react-bootstrap';
-import ResumeList from './ResumeList';
+import React from 'react'
+import { Alert, Spinner, Card, Container } from 'react-bootstrap'
+import ResumeList from './ResumeList'
 
 const ResumeSelection = ({ resumes, loading, error, onSelect }) => {
   return (
@@ -37,7 +37,7 @@ const ResumeSelection = ({ resumes, loading, error, onSelect }) => {
         </Card.Body>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default ResumeSelection;
+export default ResumeSelection
