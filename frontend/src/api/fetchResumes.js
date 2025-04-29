@@ -5,13 +5,14 @@ export default () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [retryCount, setRetryCount] = useState(0)
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
 
   useEffect(() => {
     let isMounted = true
-    setLoading(true);
-    setResumes([]);
-    setError(null);
-    
+    setLoading(true)
+    setResumes([])
+    setError(null)
+
     const fetchResumes = async () => {
       try {
         const accessToken = sessionStorage.getItem('access_token')
@@ -31,9 +32,12 @@ export default () => {
         const data = await response.json()
         if (isMounted) setResumes(data.items || [])
       } catch (err) {
-        if (isMounted) setError(err.message)
+        if (isMounted) setError(err instanceof Error ? err.message : String(err))
       } finally {
-        if (isMounted) setLoading(false)
+        if (isMounted) {
+          setLoading(false)
+          setHasLoadedOnce(true)
+        }
       }
     }
 
@@ -44,5 +48,5 @@ export default () => {
     }
   }, [retryCount])
 
-  return { resumes, loading, error }
+  return { resumes, loading, error, hasLoadedOnce }
 }

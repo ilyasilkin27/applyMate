@@ -25,7 +25,7 @@ const ResumeSelection = ({ resumes, loading, error, onSelect }) => {
             </Alert>
           )}
 
-          {!loading && !error && resumes.length === 0 && (
+          {!loading && !error && resumes.length === 0 && hasLoadedOnce && (
             <Alert variant="info" className="mt-3 rounded-3">
               Резюме не найдены
             </Alert>
