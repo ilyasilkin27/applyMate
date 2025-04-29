@@ -1,14 +1,16 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "bun run server.ts"
   },
   "dependencies": {
-    "axios": "^1.7.9",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "querystring": "^0.2.1"
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/cors": "^1.2.0",
+    "dotenv": "^16.5.0",
+    "elysia": "^1.2.25",
+    "ky": "^1.8.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }
