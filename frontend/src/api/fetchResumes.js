@@ -19,7 +19,7 @@ export default () => {
         )
         if (!response.ok) {
           if (response.status === 500 && retryCount < 3) {
-            setTimeout(() => setRetryCount((c) => c + 1), 1000)
+            setTimeout(() => setRetryCount((c) => c + 1), 500)
             return
           }
           throw new Error('Network response was not ok')
