@@ -2,7 +2,7 @@ import React from 'react'
 import { Alert, Spinner, Card, Container } from 'react-bootstrap'
 import ResumeList from './ResumeList'
 
-const ResumeSelection = ({ resumes, loading, error, onSelect }) => {
+const ResumeSelection = ({ resumes, loading, error, onSelect, hasLoadedOnce }) => {
   return (
     <Container className="py-4">
       <Card className="border-0 shadow-lg rounded-3">
