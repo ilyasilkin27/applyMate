@@ -1,21 +1,9 @@
 import { useState, useEffect } from 'react'
 
-export interface Resume {
-  id: string
-  title: string
-  first_name: string
-  middle_name?: string
-  last_name: string
-}
-
-interface ResumesResponse {
-  items: Resume[]
-}
-
-const useFetchResumes = () => {
-  const [resumes, setResumes] = useState<Resume[]>([])
+export default () => {
+  const [resumes, setResumes] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
   const [retryCount, setRetryCount] = useState(0)
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
 
@@ -41,11 +29,10 @@ const useFetchResumes = () => {
           }
           throw new Error('Network response was not ok')
         }
-        const data: ResumesResponse = await response.json()
+        const data = await response.json()
         if (isMounted) setResumes(data.items || [])
       } catch (err) {
-        if (isMounted)
-          setError(err instanceof Error ? err.message : String(err))
+        if (isMounted) setError(err instanceof Error ? err.message : String(err))
       } finally {
         if (isMounted) {
           setLoading(false)
@@ -63,5 +50,3 @@ const useFetchResumes = () => {
 
   return { resumes, loading, error, hasLoadedOnce }
 }
-
-export default useFetchResumes
