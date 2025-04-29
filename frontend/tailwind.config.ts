@@ -1,19 +1,38 @@
-import type { Config } from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
 
-const config: Config = {
+const config = {
   darkMode: 'class',
   content: [
     './index.html',
     './src/**/*.{ts,tsx,js,jsx,mdx}',
     './node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}',
   ],
+  safelist: [
+    'bg-hhred',
+    'bg-hhred-dark',
+    'text-hhred',
+    'text-hhtext',
+    'text-hhsecondary',
+    'border-hhred',
+    'border-hhtext',
+    'border-hhgreen',
+    'text-hhgreen',
+    'bg-hhgreen',
+    'bg-hhgray',
+    'bg-hhgray2',
+    'bg-hhbg',
+    'text-white',
+    'bg-white',
+  ],
   theme: {
     extend: {
       colors: {
         hhred: '#D6001C',
+        'hhred-dark': '#B80018',
+        hhgreen: '#00B341',
         hhgray: '#f5f6f7',
         hhgray2: '#e5e6e7',
+        hhbg: '#f8f9fa',
         hhtext: '#222426',
         hhsecondary: '#6a6a6a',
         border: 'hsl(var(--border))',
