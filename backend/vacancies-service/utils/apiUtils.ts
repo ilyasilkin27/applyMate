@@ -27,7 +27,7 @@ export const buildQueryParams = (ctx: Context) => {
     order_by,
   } = ctx.query as Record<string, unknown>
 
-  return {
+  const params: Record<string, unknown> = {
     per_page,
     page,
     text,
@@ -40,4 +40,11 @@ export const buildQueryParams = (ctx: Context) => {
     only_with_salary,
     order_by,
   }
+
+  return Object.fromEntries(
+    Object.entries(params).filter(
+      ([, value]) =>
+        value !== undefined && value !== null && value !== 'undefined'
+    )
+  )
 }
