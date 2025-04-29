@@ -9,6 +9,9 @@ export default () => {
   useEffect(() => {
     let isMounted = true
     setLoading(true);
+    setResumes([]);
+    setError(null);
+    
     const fetchResumes = async () => {
       try {
         const accessToken = sessionStorage.getItem('access_token')
