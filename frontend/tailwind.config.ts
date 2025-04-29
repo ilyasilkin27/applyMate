@@ -1,5 +1,4 @@
 import tailwindcssAnimate from 'tailwindcss-animate'
-import { shadcnPlugin } from '@shadcn/ui'
 
 const config = {
   darkMode: 'class',
@@ -75,9 +74,7 @@ const config = {
       },
     },
   },
-  plugins: [
-    tailwindcssAnimate,
-    shadcnPlugin(),
-  ],}
+  plugins: [tailwindcssAnimate],
+}
 
 export default config
