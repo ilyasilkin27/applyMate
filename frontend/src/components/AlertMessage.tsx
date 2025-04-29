@@ -11,7 +11,7 @@ export interface AlertMessageProps {
 }
 
 const iconMap = {
-  info: <Info className="h-5 w-5 text-blue-500 shrink-0" aria-hidden="true" />,
+  info: <Info className="h-5 w-5 text-hhred shrink-0" aria-hidden="true" />,
   danger: (
     <XCircle className="h-5 w-5 text-hhred shrink-0" aria-hidden="true" />
   ),
@@ -36,12 +36,26 @@ const titleMap = {
   success: 'Успех',
 }
 
+const bgMap = {
+  info: 'bg-hhgray',
+  danger: 'bg-hhred/10',
+  warning: 'bg-yellow-50',
+  success: 'bg-green-50',
+}
+
+const borderMap = {
+  info: 'border-hhred',
+  danger: 'border-hhred',
+  warning: 'border-yellow-400',
+  success: 'border-green-400',
+}
+
 const AlertMessage: React.FC<AlertMessageProps> = ({
   message,
   variant = 'info',
   dismissible = false,
   onClose,
-  className
+  className,
 }) => {
   if (!message) return null
   const shadcnVariantMap = {
@@ -53,9 +67,9 @@ const AlertMessage: React.FC<AlertMessageProps> = ({
 
   return (
     <Alert
-      className={`mt-3 rounded-lg shadow border-0 flex items-start gap-3 bg-white ${
-        className ?? ''
-      }`}
+      className={`mt-3 rounded-lg shadow flex items-start gap-3 ${
+        bgMap[variant]
+      } border-l-4 ${borderMap[variant]} ${className ?? ''}`}
       variant={shadcnVariantMap[variant]}
     >
       {iconMap[variant]}
