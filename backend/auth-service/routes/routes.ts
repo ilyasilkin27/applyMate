@@ -1,6 +1,6 @@
 import appInstance from '../app'
-import { login, finalizeLogin } from '../controllers/loginController.js'
-import { logout } from '../controllers/logoutController.js'
+import { login, finalizeLogin } from '../controllers/loginController'
+import { logout } from '../controllers/logoutController'
 
 type AppType = typeof appInstance
 
