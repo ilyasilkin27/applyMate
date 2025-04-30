@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 import VacancyList from "./VacancyList";
-import useFetchVacancies from "../api/fetchVacancies";
+import useFetchVacancies from "../api/fetchVacancies.ts";
 import { applyAllVacancies } from "../utils/handleApply";
 
 const SearchVacancies = ({ selectedResumeId, onApply }) => {

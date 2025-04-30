@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Spinner, Button, Card, Container } from 'react-bootstrap';
 import VacancyList from './VacancyList';
-import useFetchVacancies from '../api/fetchVacancies';
+import useFetchVacancies from '../api/fetchVacancies.ts';
 
 const RecommendedVacancies = ({
   selectedResumeId,
