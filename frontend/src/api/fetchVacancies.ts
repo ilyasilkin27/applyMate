@@ -1,16 +1,26 @@
 import { useState, useEffect } from 'react';
 
-export default (selectedResumeId, searchKeyword) => {
-  const [vacancies, setVacancies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+type Vacancy = Record<string, unknown>;
+
+interface FetchVacanciesResult {
+  vacancies: Vacancy[];
+  loading: boolean;
+  error: string | null;
+}
+
+const useFetchVacancies = (
+  selectedResumeId: string | null,
+  searchKeyword: string | null
+): FetchVacanciesResult => {
+  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchVacancies = async () => {
       setLoading(true);
       try {
         const accessToken = sessionStorage.getItem('access_token');
-        
         if (!accessToken) {
           throw new Error('no access token');
         }
@@ -39,7 +49,7 @@ export default (selectedResumeId, searchKeyword) => {
         const data = await response.json();
         setVacancies(data.items || []);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setLoading(false);
       }
@@ -56,3 +66,5 @@ export default (selectedResumeId, searchKeyword) => {
 
   return { vacancies, loading, error };
 };
+
+export default useFetchVacancies;
