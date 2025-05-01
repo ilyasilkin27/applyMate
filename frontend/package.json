@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
+    "ky": "^1.8.1",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-bootstrap-icons": "^1.11.5",

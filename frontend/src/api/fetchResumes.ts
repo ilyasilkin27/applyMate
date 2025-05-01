@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import ky from 'ky'
 import type { Resume } from '../types/models'
 
 interface FetchResumesResult {
@@ -12,40 +13,41 @@ const useFetchResumes = (): FetchResumesResult => {
   const [resumes, setResumes] = useState<Resume[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-  const [retryCount, setRetryCount] = useState<number>(0)
   const [hasLoadedOnce, setHasLoadedOnce] = useState<boolean>(false)
 
   useEffect(() => {
-    let isMounted = true
-    setLoading(true)
-    setResumes([])
-    setError(null)
+    const abortController = new AbortController()
+    const { signal } = abortController
 
     const fetchResumes = async () => {
+      setLoading(true)
+      setError(null)
+      
       try {
         const accessToken = sessionStorage.getItem('access_token')
-        const response = await fetch(
-          'https://applymate-resume-service.onrender.com/api/resumes/getResumes',
-          {
+        const data = await ky
+          .get('https://applymate-resume-service.onrender.com/api/resumes/getResumes', {
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        )
-        if (!response.ok) {
-          if (response.status === 500 && retryCount < 3) {
-            setTimeout(() => setRetryCount((c) => c + 1), 1000)
-            return
-          }
-          throw new Error('Network response was not ok')
-        }
-        const data = await response.json()
-        if (isMounted) setResumes((data.items as Resume[]) || [])
+            retry: {
+              limit: 3,
+              methods: ['get'],
+              statusCodes: [500],
+              delay: (attemptCount) => 1000 * attemptCount,
+            },
+            signal,
+            timeout: 10000,
+          })
+          .json<{ items: Resume[] }>()
+
+        setResumes(data.items || [])
+        setHasLoadedOnce(true)
       } catch (err) {
-        if (isMounted)
+        if (!signal.aborted) {
           setError(err instanceof Error ? err.message : String(err))
+        }
       } finally {
-        if (isMounted) {
+        if (!signal.aborted) {
           setLoading(false)
-          setHasLoadedOnce(true)
         }
       }
     }
@@ -53,9 +55,9 @@ const useFetchResumes = (): FetchResumesResult => {
     fetchResumes()
 
     return () => {
-      isMounted = false
+      abortController.abort()
     }
-  }, [retryCount])
+  }, [])
 
   return { resumes, loading, error, hasLoadedOnce }
 }
