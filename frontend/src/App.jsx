@@ -5,8 +5,8 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import Login from "./components/Login.jsx";
-import HomePage from "./components/HomePage.jsx";
+import Login from "./components/Login";
+import HomePage from "./components/HomePage";
 
 const App = () => {
   return (
