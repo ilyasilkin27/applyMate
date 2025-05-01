@@ -15,20 +15,25 @@ import {
 import { applyAllVacancies, applyVacancy } from '../utils/handleApply'
 import { useLocation } from 'react-router-dom'
 
-const HomePage = () => {
+interface CoverLetters {
+  [resumeId: string]: string
+}
+
+const HomePage: React.FC = () => {
   const location = useLocation()
   const {
     resumes,
     loading: resumesLoading,
     error: resumesError,
   } = useFetchResumes()
-  const [selectedResumeId, setSelectedResumeId] = useState(null)
-  const [coverLetters, setCoverLetters] = useState(
-    loadFromLocalStorage('coverLetters', {})
+  const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null)
+  const [coverLetters, setCoverLetters] = useState<CoverLetters>(
+    loadFromLocalStorage<CoverLetters>('coverLetters', {})
   )
-  const [customAlert, setCustomAlert] = useState(null)
-  const [searchKeyword, setSearchKeyword] = useState('')
-  const [showCoverLetterModal, setShowCoverLetterModal] = useState(false)
+  const [customAlert, setCustomAlert] = useState<string | null>(null)
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+  const [showCoverLetterModal, setShowCoverLetterModal] =
+    useState<boolean>(false)
 
   useEffect(() => {
     saveToLocalStorage('coverLetters', coverLetters)
@@ -45,27 +50,28 @@ const HomePage = () => {
     }
   }, [location])
 
-  const handleCoverLetterChange = (resumeId, text) => {
+  const handleCoverLetterChange = (resumeId: string | null, text: string) => {
+    if (!resumeId) return
     setCoverLetters((prev) => ({
       ...prev,
       [resumeId]: text,
     }))
   }
 
-  const handleApplyVacancy = async (vacancyId) => {
+  const handleApplyVacancy = async (vacancyId: string) => {
     await applyVacancy(
       selectedResumeId,
       vacancyId,
-      coverLetters[selectedResumeId] || '',
+      coverLetters[selectedResumeId ?? ''] || '',
       setCustomAlert
     )
   }
 
-  const handleApplyAllVacancies = async (vacancyIds) => {
+  const handleApplyAllVacancies = async (vacancyIds: string[]) => {
     await applyAllVacancies(
       selectedResumeId,
       vacancyIds,
-      coverLetters[selectedResumeId] || '',
+      coverLetters[selectedResumeId ?? ''] || '',
       setCustomAlert
     )
   }
@@ -128,7 +134,7 @@ const HomePage = () => {
                   onApply={handleApplyAllVacancies}
                   onApplyAll={handleApplyAllVacancies}
                 />
-                <AlertMessage message={customAlert} variant="warning" />
+                <AlertMessage message={customAlert || ''} variant="warning" />
               </Card.Body>
             </Card>
           </Col>
@@ -145,7 +151,7 @@ const HomePage = () => {
         </Modal.Header>
         <Modal.Body>
           <CoverLetter
-            value={coverLetters[selectedResumeId] || ''}
+            value={coverLetters[selectedResumeId ?? ''] || ''}
             onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
           />
         </Modal.Body>

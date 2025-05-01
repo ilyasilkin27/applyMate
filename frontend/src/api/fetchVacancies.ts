@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-type Vacancy = Record<string, unknown>;
+import type { Vacancy } from '../types/models'
 
 interface FetchVacanciesResult {
   vacancies: Vacancy[];
@@ -47,7 +46,7 @@ const useFetchVacancies = (
         }
 
         const data = await response.json();
-        setVacancies(data.items || []);
+        setVacancies(data.items as Vacancy[] || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       } finally {

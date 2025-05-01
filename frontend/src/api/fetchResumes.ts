@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-
-type Resume = Record<string, unknown>
+import type { Resume } from '../types/models'
 
 interface FetchResumesResult {
   resumes: Resume[]
@@ -39,7 +38,7 @@ const useFetchResumes = (): FetchResumesResult => {
           throw new Error('Network response was not ok')
         }
         const data = await response.json()
-        if (isMounted) setResumes(data.items || [])
+        if (isMounted) setResumes((data.items as Resume[]) || [])
       } catch (err) {
         if (isMounted)
           setError(err instanceof Error ? err.message : String(err))

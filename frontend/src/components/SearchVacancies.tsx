@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Form,
   Spinner,
@@ -7,37 +7,49 @@ import {
   Card,
   InputGroup,
   Container,
-} from "react-bootstrap";
-import { Search } from "react-bootstrap-icons";
-import VacancyList from "./VacancyList";
-import useFetchVacancies from "../api/fetchVacancies.ts";
-import { applyAllVacancies } from "../utils/handleApply";
+} from 'react-bootstrap'
+import { Search } from 'react-bootstrap-icons'
+import VacancyList from './VacancyList'
+import useFetchVacancies from '../api/fetchVacancies'
+import { applyAllVacancies } from '../utils/handleApply'
+import type { Vacancy } from '../types/models'
 
-const SearchVacancies = ({ selectedResumeId, onApply }) => {
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [isApplying, setIsApplying] = useState(false);
-  const [applyError, setApplyError] = useState(null);
+interface SearchVacanciesProps {
+  selectedResumeId: string | null
+  searchKeyword: string
+  setSearchKeyword: React.Dispatch<React.SetStateAction<string>>
+  onApply: (vacancyId: string) => void
+  coverLetter: string
+}
+
+const SearchVacancies: React.FC<SearchVacanciesProps> = ({
+  selectedResumeId,
+  onApply,
+}) => {
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+  const [isApplying, setIsApplying] = useState<boolean>(false)
+  const [applyError, setApplyError] = useState<string | null>(null)
   const { vacancies, loading, error } = useFetchVacancies(
     selectedResumeId,
     searchKeyword
-  );
+  )
 
-  const hasSearchResults = searchKeyword && vacancies.length > 0;
+  const hasSearchResults = !!searchKeyword && vacancies.length > 0
 
   const handleApplyAll = async () => {
-    if (!selectedResumeId || vacancies.length === 0) return;
+    if (!selectedResumeId || vacancies.length === 0) return
 
-    setIsApplying(true);
-    setApplyError(null);
+    setIsApplying(true)
+    setApplyError(null)
 
-    const vacancyIds = vacancies.map((v) => v.id);
-    await applyAllVacancies(selectedResumeId, vacancyIds, "", setApplyError);
+    const vacancyIds = vacancies.map((v: Vacancy) => v.id)
+    await applyAllVacancies(selectedResumeId, vacancyIds, '', setApplyError)
 
-    setIsApplying(false);
+    setIsApplying(false)
     if (!applyError) {
-      alert("Успешно отправлено на все вакансии!");
+      alert('Успешно отправлено на все вакансии!')
     }
-  };
+  }
 
   return (
     <Container className="py-4">
@@ -55,9 +67,11 @@ const SearchVacancies = ({ selectedResumeId, onApply }) => {
               type="text"
               placeholder="Введите ключевое слово"
               value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearchKeyword(e.target.value)
+              }
               className="border-start-0 py-2"
-              style={{ height: "46px" }}
+              style={{ height: '46px' }}
             />
           </InputGroup>
 
@@ -101,7 +115,7 @@ const SearchVacancies = ({ selectedResumeId, onApply }) => {
                     <span className="ms-2">Отправка...</span>
                   </>
                 ) : (
-                  "Отправить на все"
+                  'Отправить на все'
                 )}
               </Button>
               <VacancyList vacancies={vacancies} onApply={onApply} />
@@ -122,7 +136,7 @@ const SearchVacancies = ({ selectedResumeId, onApply }) => {
         </Card.Body>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default SearchVacancies;
+export default SearchVacancies

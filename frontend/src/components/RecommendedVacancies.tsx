@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, Spinner, Button, Card, Container } from 'react-bootstrap';
-import VacancyList from './VacancyList';
-import useFetchVacancies from '../api/fetchVacancies.ts';
+import React, { useState, useEffect } from 'react'
+import { Alert, Spinner, Button, Card, Container } from 'react-bootstrap'
+import VacancyList from './VacancyList'
+import useFetchVacancies from '../api/fetchVacancies'
+import type { Vacancy } from '../types/models'
 
-const RecommendedVacancies = ({
+interface RecommendedVacanciesProps {
+  selectedResumeId: string | null
+  coverLetter: string
+  onApply: (vacancyIds: string[]) => void
+  onApplyAll: (vacancyIds: string[]) => void
+  customAlert?: string | null
+}
+
+const RecommendedVacancies: React.FC<RecommendedVacanciesProps> = ({
   selectedResumeId,
   onApply,
   onApplyAll,
   customAlert,
 }) => {
-  const { vacancies, loading, error } = useFetchVacancies(selectedResumeId);
-  const [filteredVacancies, setFilteredVacancies] = useState([]);
+  const { vacancies, loading, error } = useFetchVacancies(
+    selectedResumeId,
+    null
+  )
+  const [filteredVacancies, setFilteredVacancies] = useState<Vacancy[]>([])
 
   useEffect(() => {
-    setFilteredVacancies(vacancies.filter((vacancy) => !vacancy.has_test));
-  }, [vacancies]);
+    setFilteredVacancies(vacancies.filter((vacancy) => !vacancy.has_test))
+  }, [vacancies])
 
   return (
     <Container className="py-4">
@@ -62,13 +74,13 @@ const RecommendedVacancies = ({
           {!loading && !error && filteredVacancies.length > 0 && (
             <VacancyList
               vacancies={filteredVacancies}
-              onApply={(id) => onApply([id])}
+              onApply={(id: string) => onApply([id])}
             />
           )}
         </Card.Body>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
-export default RecommendedVacancies;
+export default RecommendedVacancies
