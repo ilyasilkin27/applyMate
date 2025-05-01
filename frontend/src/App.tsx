@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react'
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
-} from "react-router-dom";
-import Login from "./components/Login";
-import HomePage from "./components/HomePage";
+} from 'react-router-dom'
+import Login from './components/Login'
+import HomePage from './components/HomePage'
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>
@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
       </Routes>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App
