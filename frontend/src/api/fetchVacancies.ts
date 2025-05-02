@@ -1,69 +1,91 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
+import ky from 'ky'
 import type { Vacancy } from '../types/models'
 
 interface FetchVacanciesResult {
-  vacancies: Vacancy[];
-  loading: boolean;
-  error: string | null;
+  vacancies: Vacancy[]
+  loading: boolean
+  error: string | null
 }
 
 const useFetchVacancies = (
   selectedResumeId: string | null,
   searchKeyword: string | null
 ): FetchVacanciesResult => {
-  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [vacancies, setVacancies] = useState<Vacancy[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const abortController = new AbortController()
+    const { signal } = abortController
+
     const fetchVacancies = async () => {
-      setLoading(true);
+      setLoading(true)
+      setError(null)
+
       try {
-        const accessToken = sessionStorage.getItem('access_token');
+        const accessToken = sessionStorage.getItem('access_token')
         if (!accessToken) {
-          throw new Error('no access token');
+          throw new Error('No access token')
+        }
+
+        const cacheKey = `vacancies_${selectedResumeId || 'search'}_${
+          searchKeyword || 'none'
+        }`
+        const cached = sessionStorage.getItem(cacheKey)
+
+        if (cached) {
+          setVacancies(JSON.parse(cached))
+          setLoading(false)
         }
 
         const url = searchKeyword
           ? `https://applymate-vacancies-service.onrender.com/api/vacancies/search?text=${searchKeyword}`
-          : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`;
+          : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`
 
-        const response = await fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        const data = await ky
+          .get(url, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            signal,
+            timeout: 5000,
+            retry: {
+              limit: 2,
+              methods: ['get'],
+              statusCodes: [408, 500, 502, 503, 504],
+            },
+          })
+          .json<{ items: Vacancy[] }>()
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error('auth error: check access token');
-          }
-          if (response.status === 502) {
-            throw new Error('service error: vacancies service is temporarily unavailable');
-          }
-          throw new Error('Ошибка сети');
-        }
-
-        const data = await response.json();
-        setVacancies(data.items as Vacancy[] || []);
+        setVacancies(data.items || [])
+        sessionStorage.setItem(cacheKey, JSON.stringify(data.items || []))
       } catch (err) {
-        setError(err instanceof Error ? err.message : String(err));
+        if (!signal.aborted) {
+          setError(err instanceof Error ? err.message : String(err))
+        }
       } finally {
-        setLoading(false);
+        if (!signal.aborted) {
+          setLoading(false)
+        }
       }
-    };
-
-    if (selectedResumeId || searchKeyword) {
-      const debounceTimer = setTimeout(() => {
-        fetchVacancies();
-      }, 300);
-
-      return () => clearTimeout(debounceTimer);
     }
-  }, [selectedResumeId, searchKeyword]);
 
-  return { vacancies, loading, error };
-};
+    const debounceTimer = setTimeout(() => {
+      if (selectedResumeId || searchKeyword) {
+        fetchVacancies()
+      }
+    }, 300)
 
-export default useFetchVacancies;
+    return () => {
+      abortController.abort()
+      clearTimeout(debounceTimer)
+    }
+  }, [selectedResumeId, searchKeyword])
+
+  return { vacancies, loading, error }
+}
+
+export default useFetchVacancies
