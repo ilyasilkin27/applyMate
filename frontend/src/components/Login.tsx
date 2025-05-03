@@ -1,6 +1,5 @@
 import React from 'react'
 import { Container, Button, Card } from 'react-bootstrap'
-import { LockFill } from 'react-bootstrap-icons'
 
 const Login: React.FC = () => {
   const handleLogin = (): void => {
@@ -16,7 +15,6 @@ const Login: React.FC = () => {
       >
         <Card.Body className="p-4">
           <div className="text-center mb-4">
-            <LockFill size={48} className="text-primary mb-3" />
             <h2 className="fw-bold mb-3">ApplyMate</h2>
           </div>
 
@@ -28,12 +26,6 @@ const Login: React.FC = () => {
           >
             Войти через HeadHunter
           </Button>
-
-          <div className="text-center mt-4">
-            <small className="text-muted">
-              Продолжая, вы соглашаетесь с нашими условиями использования
-            </small>
-          </div>
         </Card.Body>
       </Card>
     </Container>
