@@ -29,14 +29,23 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes, onSelect }) => {
         <div className="grid gap-2">
           <Label htmlFor="resume-select">Выберите резюме</Label>
           <Select onValueChange={handleSelect} value={selectedResumeId || ''}>
-            <SelectTrigger id="resume-select" className="w-full">
-              <SelectValue placeholder="Выберите резюме" />
+            <SelectTrigger
+              id="resume-select"
+              className="w-full text-sm sm:text-base"
+            >
+              <SelectValue placeholder="Выберите резюме" className="truncate" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[200px] sm:max-h-none">
               {resumes.map((resume) => (
-                <SelectItem key={resume.id} value={resume.id}>
-                  {resume.title} - {resume.first_name} {resume.middle_name}
-                  {resume.last_name}
+                <SelectItem
+                  key={resume.id}
+                  value={resume.id}
+                  className="text-sm sm:text-base"
+                >
+                  <span className="truncate">
+                    {resume.title} - {resume.first_name}{' '}
+                    {resume.middle_name?.charAt(0)}.
+                  </span>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -46,5 +55,4 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes, onSelect }) => {
     </Card>
   )
 }
-
 export default ResumeList
