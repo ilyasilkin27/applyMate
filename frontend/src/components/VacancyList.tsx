@@ -1,5 +1,12 @@
 import React, { useState } from 'react'
-import { Card, Button, Badge, Stack } from 'react-bootstrap'
+import {
+  Card,
+  CardContent,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import type { Vacancy } from '../types/models'
 
 interface VacancyListProps {
@@ -16,61 +23,59 @@ const VacancyList: React.FC<VacancyListProps> = ({ vacancies, onApply }) => {
   }
 
   return (
-    <div style={{ maxHeight: '495px', overflowY: 'auto' }} className="p-3">
-      <Stack gap={3}>
-        {vacancies.map((vacancy) => {
-          const isApplied = appliedVacancies.includes(vacancy.id)
+    <div className="max-h-[495px] overflow-y-auto p-3 space-y-3">
+      {vacancies.map((vacancy) => {
+        const isApplied = appliedVacancies.includes(vacancy.id)
 
-          return (
-            <Card
-              key={vacancy.id}
-              className={`shadow-sm ${isApplied ? 'opacity-50' : ''}`}
-            >
-              <Card.Body>
-                <div className="d-flex justify-content-between align-items-start">
-                  <div>
-                    <Card.Title className="mb-2">{vacancy.name}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {vacancy.employer?.name || 'Неизвестная компания'}
-                    </Card.Subtitle>
-                  </div>
-                  <Badge bg="light" text="dark" className="fs-6">
-                    {vacancy.salary
-                      ? `${vacancy.salary.from} - ${vacancy.salary.to} ${vacancy.salary.currency}`
-                      : 'Зарплата не указана'}
-                  </Badge>
+        return (
+          <Card
+            key={vacancy.id}
+            className={`shadow-sm ${isApplied ? 'opacity-50' : ''}`}
+          >
+            <CardContent className="p-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="mb-2">{vacancy.name}</CardTitle>
+                  <CardDescription className="mb-2">
+                    {vacancy.employer?.name || 'Неизвестная компания'}
+                  </CardDescription>
                 </div>
+                <Badge variant="outline" className="text-sm">
+                  {vacancy.salary
+                    ? `${vacancy.salary.from} - ${vacancy.salary.to} ${vacancy.salary.currency}`
+                    : 'Зарплата не указана'}
+                </Badge>
+              </div>
 
-                <Card.Text className="text-muted small mb-3">
-                  Опубликовано:{' '}
-                  {new Date(vacancy.published_at).toLocaleDateString()}
-                </Card.Text>
+              <p className="text-muted-foreground text-sm mb-3">
+                Опубликовано:{' '}
+                {new Date(vacancy.published_at).toLocaleDateString()}
+              </p>
 
-                <div className="d-flex justify-content-between align-items-center">
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
+              <div className="flex justify-between items-center">
+                <Button variant="outline" size="sm" asChild>
+                  <a
                     href={vacancy.alternate_url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Посмотреть вакансию
-                  </Button>
+                  </a>
+                </Button>
 
-                  <Button
-                    variant={isApplied ? 'outline-success' : 'primary'}
-                    size="sm"
-                    onClick={() => handleApply(vacancy.id)}
-                    disabled={isApplied}
-                  >
-                    {isApplied ? 'Отправлено' : 'Откликнуться'}
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          )
-        })}
-      </Stack>
+                <Button
+                  variant={isApplied ? 'outline' : 'default'}
+                  size="sm"
+                  onClick={() => handleApply(vacancy.id)}
+                  disabled={isApplied}
+                >
+                  {isApplied ? 'Отправлено' : 'Откликнуться'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
     </div>
   )
 }

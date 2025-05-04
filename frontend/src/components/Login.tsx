@@ -1,5 +1,6 @@
 import React from 'react'
-import { Container, Button, Card } from 'react-bootstrap'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 const Login: React.FC = () => {
   const handleLogin = (): void => {
@@ -8,27 +9,24 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Container className="d-flex vh-100 justify-content-center align-items-center">
-      <Card
-        className="border-0 shadow-lg rounded-4"
-        style={{ width: '100%', maxWidth: '400px' }}
-      >
-        <Card.Body className="p-4">
-          <div className="text-center mb-4">
-            <h2 className="fw-bold mb-3">ApplyMate</h2>
-          </div>
-
+    <div className="flex min-h-screen items-center justify-center bg-neutral-50">
+      <Card className="w-full max-w-md border-0 bg-white shadow-lg rounded-lg overflow-hidden">
+        <CardHeader className="text-center p-8 pb-6">
+          <CardTitle className="text-3xl font-bold text-neutral-900">
+            ApplyMate
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-8 pt-0">
           <Button
-            variant="primary"
             onClick={handleLogin}
+            className="w-full text-lg font-medium text-white"
             size="lg"
-            className="w-100 mb-3 fw-bold py-2 shadow-sm"
           >
             Войти через HeadHunter
           </Button>
-        </Card.Body>
+        </CardContent>
       </Card>
-    </Container>
+    </div>
   )
 }
 

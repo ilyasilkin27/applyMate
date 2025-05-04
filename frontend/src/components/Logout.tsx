@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button, Card } from 'react-bootstrap'
+import { Button } from '@/components/ui/button'
 import { clearSessionStorage } from '../utils/storageUtils'
-import { BoxArrowRight } from 'react-bootstrap-icons'
+import { ExitIcon } from '@radix-ui/react-icons'
 
 const Logout: React.FC = () => {
   const handleLogout = (): void => {
@@ -11,16 +11,16 @@ const Logout: React.FC = () => {
   }
 
   return (
-    <Card className="border-0 shadow-sm rounded-3 p-2 bg-light">
+    <div>
       <Button
-        variant="outline-danger"
+        variant="outline"
         onClick={handleLogout}
-        className="d-flex align-items-center gap-2 fw-medium"
+        className="flex items-center gap-2 font-medium text-destructive hover:text-destructive"
       >
-        <BoxArrowRight size={18} />
+        <ExitIcon className="h-4 w-4" />
         <span>Выйти</span>
       </Button>
-    </Card>
+    </div>
   )
 }
 

@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { Form, Card, FloatingLabel } from 'react-bootstrap'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
 import type { Resume } from '../types/models'
 
 interface ResumeListProps {
@@ -10,35 +18,31 @@ interface ResumeListProps {
 const ResumeList: React.FC<ResumeListProps> = ({ resumes, onSelect }) => {
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null)
 
-  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = e.target.value
-    setSelectedResumeId(id)
-    onSelect(id)
+  const handleSelect = (value: string) => {
+    setSelectedResumeId(value)
+    onSelect(value)
   }
 
   return (
-    <Card className="border-0 shadow-sm rounded-3">
-      <Card.Body className="p-3">
-        <FloatingLabel controlId="resumeSelect" label="Выберите резюме">
-          <Form.Select
-            aria-label="Выберите резюме"
-            onChange={handleSelect}
-            value={selectedResumeId || ''}
-            className="border-0 shadow-none"
-            style={{ backgroundColor: 'transparent' }}
-          >
-            <option value="" className="text-muted">
-              Выберите резюме
-            </option>
-            {resumes.map((resume) => (
-              <option key={resume.id} value={resume.id} className="text-dark">
-                {resume.title} - {resume.first_name} {resume.middle_name}{' '}
-                {resume.last_name}
-              </option>
-            ))}
-          </Form.Select>
-        </FloatingLabel>
-      </Card.Body>
+    <Card className="border-0 shadow-sm rounded-lg">
+      <CardContent className="p-4">
+        <div className="grid gap-2">
+          <Label htmlFor="resume-select">Выберите резюме</Label>
+          <Select onValueChange={handleSelect} value={selectedResumeId || ''}>
+            <SelectTrigger id="resume-select" className="w-full">
+              <SelectValue placeholder="Выберите резюме" />
+            </SelectTrigger>
+            <SelectContent>
+              {resumes.map((resume) => (
+                <SelectItem key={resume.id} value={resume.id}>
+                  {resume.title} - {resume.first_name} {resume.middle_name}{' '}
+                  {resume.last_name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </CardContent>
     </Card>
   )
 }

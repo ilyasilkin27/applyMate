@@ -1,14 +1,9 @@
 import React, { useState } from 'react'
-import {
-  Form,
-  Spinner,
-  Alert,
-  Button,
-  Card,
-  InputGroup,
-  Container,
-} from 'react-bootstrap'
-import { Search } from 'react-bootstrap-icons'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Loader2, Search } from 'lucide-react'
 import VacancyList from './VacancyList'
 import useFetchVacancies from '../api/fetchVacancies'
 import { applyAllVacancies } from '../utils/handleApply'
@@ -52,67 +47,53 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
   }
 
   return (
-    <Container className="py-4">
-      <Card className="border-0 shadow-lg rounded-3">
-        <Card.Body className="p-4">
-          <Card.Title className="mb-4 fs-2 fw-bold text-primary">
+    <div className="py-4">
+      <Card className="border-0 shadow-lg rounded-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-primary">
             Поиск вакансий
-          </Card.Title>
-
-          <InputGroup className="mb-4 shadow-sm">
-            <InputGroup.Text className="bg-white border-end-0">
-              <Search className="text-muted" />
-            </InputGroup.Text>
-            <Form.Control
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
               type="text"
               placeholder="Введите ключевое слово"
               value={searchKeyword}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearchKeyword(e.target.value)
-              }
-              className="border-start-0 py-2"
-              style={{ height: '46px' }}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="pl-10 py-2 h-12"
             />
-          </InputGroup>
+          </div>
 
           {loading && (
-            <div className="text-center py-4">
-              <Spinner animation="border" variant="primary" role="status">
-                <span className="visually-hidden">Загрузка...</span>
-              </Spinner>
+            <div className="flex justify-center py-4">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           )}
 
           {error && (
-            <Alert variant="danger" className="mt-3 rounded-3">
-              {error}
+            <Alert variant="destructive" className="mt-3 rounded-lg">
+              <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
           {applyError && (
-            <Alert variant="warning" className="mt-3 rounded-3">
-              {applyError}
+            <Alert variant="destructive" className="mt-3 rounded-lg">
+              <AlertDescription>{applyError}</AlertDescription>
             </Alert>
           )}
 
           {hasSearchResults && (
             <div className="mt-4">
               <Button
-                variant="primary"
                 onClick={handleApplyAll}
                 disabled={isApplying || vacancies.length === 0}
-                size="lg"
-                className="w-100 mb-4 py-3 fw-bold shadow-sm"
+                className="w-full mb-4 py-3 font-bold"
               >
                 {isApplying ? (
                   <>
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    <span className="ms-2">Отправка...</span>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Отправка...
                   </>
                 ) : (
                   'Отправить на все'
@@ -123,19 +104,23 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
           )}
 
           {searchKeyword && !loading && !error && vacancies.length === 0 && (
-            <Alert variant="info" className="mt-3 rounded-3">
-              По вашему запросу ничего не найдено.
+            <Alert variant="default" className="mt-3 rounded-lg">
+              <AlertDescription>
+                По вашему запросу ничего не найдено.
+              </AlertDescription>
             </Alert>
           )}
 
           {!searchKeyword && (
-            <Alert variant="light" className="mt-3 rounded-3 border">
-              Начните вводить ключевое слово для поиска вакансий.
+            <Alert variant="default" className="mt-3 rounded-lg">
+              <AlertDescription>
+                Начните вводить ключевое слово для поиска вакансий.
+              </AlertDescription>
             </Alert>
           )}
-        </Card.Body>
+        </CardContent>
       </Card>
-    </Container>
+    </div>
   )
 }
 

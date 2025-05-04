@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap'
 import Logout from './Logout'
 import ResumeSelection from './ResumeSelection'
 import CoverLetter from './CoverLetter'
 import RecommendedVacancies from './RecommendedVacancies'
 import useFetchResumes from '../api/fetchResumes'
 import SearchVacancies from './SearchVacancies'
-import AlertMessage from './AlertMessage'
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
@@ -14,6 +12,16 @@ import {
 } from '../utils/storageUtils'
 import { applyAllVacancies, applyVacancy } from '../utils/handleApply'
 import { useLocation } from 'react-router-dom'
+import { ModeToggle } from './mode-toggle'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 interface CoverLetters {
   [resumeId: string]: string
@@ -77,43 +85,43 @@ const HomePage: React.FC = () => {
   }
 
   return (
-    <Container
-      fluid
-      className="p-4 min-vh-100"
-      style={{ backgroundColor: '#f8f9fa' }}
-    >
-      <Card className="shadow-sm mb-4">
-        <Card.Body className="p-4">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h1 className="mb-0" style={{ color: '#0d6efd' }}>
-              ApplyMate
-            </h1>
-            <Logout />
-          </div>
-
-          <ResumeSelection
-            resumes={resumes}
-            loading={resumesLoading}
-            error={resumesError}
-            onSelect={setSelectedResumeId}
-          />
-          <Button
-            variant="outline-primary"
-            size="sm"
-            onClick={() => setShowCoverLetterModal(true)}
-            className="ms-2"
-          >
-            <i className="bi bi-pencil-square me-2"></i>
-            Сопроводительное письмо
-          </Button>
-        </Card.Body>
-      </Card>
-
-      {selectedResumeId && (
-        <Row className="g-4">
-          <Col lg={6}>
-            <Card className="shadow-sm h-100">
-              <Card.Body className="p-4">
+    <div className="min-h-screen bg-background">
+      {' '}
+      {/* Changed from bg-gray-50 to bg-background */}
+      <div className="container mx-auto p-4">
+        {' '}
+        {/* Added container for consistent width */}
+        <Card className="mb-4">
+          {' '}
+          {/* Removed shadow-sm as it's now part of the card style */}
+          <CardHeader className="p-4">
+            <div className="flex gap-2">
+              <ModeToggle />
+              <Logout />
+            </div>
+          </CardHeader>
+          <CardContent className="p-4">
+            <ResumeSelection
+              resumes={resumes}
+              loading={resumesLoading}
+              error={resumesError}
+              onSelect={setSelectedResumeId}
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowCoverLetterModal(true)}
+              className="mt-2"
+            >
+              <span className="mr-2">✏️</span>
+              Сопроводительное письмо
+            </Button>
+          </CardContent>
+        </Card>
+        {selectedResumeId && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardContent className="p-4">
                 <SearchVacancies
                   selectedResumeId={selectedResumeId}
                   searchKeyword={searchKeyword}
@@ -121,42 +129,44 @@ const HomePage: React.FC = () => {
                   onApply={handleApplyVacancy}
                   coverLetter={coverLetters[selectedResumeId] || ''}
                 />
-              </Card.Body>
+              </CardContent>
             </Card>
-          </Col>
 
-          <Col lg={6}>
-            <Card className="shadow-sm h-100">
-              <Card.Body className="p-4">
+            <Card>
+              <CardContent className="p-4">
                 <RecommendedVacancies
                   selectedResumeId={selectedResumeId}
                   coverLetter={coverLetters[selectedResumeId] || ''}
                   onApply={handleApplyAllVacancies}
                   onApplyAll={handleApplyAllVacancies}
                 />
-                <AlertMessage message={customAlert || ''} variant="warning" />
-              </Card.Body>
+                {customAlert && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{customAlert}</AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
             </Card>
-          </Col>
-        </Row>
-      )}
-
-      <Modal
-        show={showCoverLetterModal}
-        onHide={() => setShowCoverLetterModal(false)}
-        size="lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Редактировать сопроводительное письмо</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <CoverLetter
-            value={coverLetters[selectedResumeId ?? ''] || ''}
-            onChange={(text) => handleCoverLetterChange(selectedResumeId, text)}
-          />
-        </Modal.Body>
-      </Modal>
-    </Container>
+          </div>
+        )}
+        <Dialog
+          open={showCoverLetterModal}
+          onOpenChange={setShowCoverLetterModal}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Редактировать сопроводительное письмо</DialogTitle>
+            </DialogHeader>
+            <CoverLetter
+              value={coverLetters[selectedResumeId ?? ''] || ''}
+              onChange={(text) =>
+                handleCoverLetterChange(selectedResumeId, text)
+              }
+            />
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
   )
 }
 

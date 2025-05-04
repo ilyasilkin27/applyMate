@@ -1,55 +1,34 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { cn } from '@/lib/utils'
 
 interface AlertMessageProps {
   message: string
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'danger'
-    | 'warning'
-    | 'info'
-    | 'light'
-    | 'dark'
-  dismissible?: boolean
-  onClose?: () => void
+  variant?: 'default' | 'destructive'
 }
 
 const AlertMessage: React.FC<AlertMessageProps> = ({
   message,
-  variant = 'info',
-  dismissible = false,
-  onClose,
+  variant = 'default',
 }) => {
   if (!message) return null
 
   return (
     <Alert
       variant={variant}
-      className="mt-3 rounded-3 shadow-sm border-0"
-      style={{
-        backgroundColor: `var(--bs-${variant}-bg-subtle)`,
-        color: `var(--bs-${variant}-text-emphasis)`,
-        borderLeft: `4px solid var(--bs-${variant})`,
-      }}
-      dismissible={dismissible}
-      onClose={onClose}
+      className={cn(
+        'mt-3 rounded-lg shadow-sm',
+        variant === 'destructive' ? 'bg-destructive/10' : 'bg-background'
+      )}
     >
-      <div className="d-flex align-items-center">
-        <i
-          className={`bi bi-${
-            variant === 'danger'
-              ? 'exclamation-octagon'
-              : variant === 'warning'
-              ? 'exclamation-triangle'
-              : variant === 'success'
-              ? 'check-circle'
-              : 'info-circle'
-          } me-2`}
-        ></i>
-        <span className="fw-medium">{message}</span>
-      </div>
+      <AlertDescription className="flex items-center gap-2">
+        {variant === 'destructive' ? (
+          <span className="text-destructive">⚠️</span>
+        ) : (
+          <span className="text-primary">ℹ️</span>
+        )}
+        <span className="font-medium">{message}</span>
+      </AlertDescription>
     </Alert>
   )
 }

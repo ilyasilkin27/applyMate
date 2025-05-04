@@ -1,26 +1,23 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
 
 interface CoverLetterProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string
+  onChange: (value: string) => void
 }
 
 const CoverLetter: React.FC<CoverLetterProps> = ({ value, onChange }) => (
-  <div className="mt-4 p-3 bg-light rounded-3 shadow-sm">
-    <h4 className="mb-3 text-primary">Сопроводительное письмо</h4>
-    <Form.Group controlId="coverLetter" className="mb-3">
-      <Form.Control
-        as="textarea"
-        style={{ height: '150px', resize: 'none' }}
-        value={value}
-        onChange={(
-          e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        ) => onChange(e.target.value)}
-        className="border-primary"
-        placeholder="Введите текст письма..."
-      />
-    </Form.Group>
+  <div className="mt-4 p-3 bg-muted rounded-lg shadow-sm">
+    <Label className="text-lg font-medium text-primary mb-3 block">
+      Сопроводительное письмо
+    </Label>
+    <Textarea
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="min-h-[150px] border-primary"
+      placeholder="Введите текст письма..."
+    />
   </div>
 )
 
