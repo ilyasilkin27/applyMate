@@ -61,6 +61,7 @@ const VacancyList: React.FC<VacancyListProps> = ({ vacancies, onApply }) => {
                   href={vacancy.alternate_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="pb-6"
                 >
                   Посмотреть вакансию
                 </a>
