@@ -40,7 +40,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes, onSelect }) => {
               className="text-sm sm:text-base"
             >
               <span className="truncate">
-                {resume.title} - {resume.first_name}{' '}
+                {resume.title} - {resume.first_name}
                 {resume.middle_name?.charAt(0)}.
               </span>
             </SelectItem>

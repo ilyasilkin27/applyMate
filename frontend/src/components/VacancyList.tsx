@@ -35,7 +35,7 @@ const VacancyList: React.FC<VacancyListProps> = ({ vacancies, onApply }) => {
                   {vacancy.employer?.name || 'Неизвестная компания'}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Опубликовано:{' '}
+                  Опубликовано:
                   {new Date(vacancy.published_at).toLocaleDateString()}
                 </p>
               </div>
@@ -49,28 +49,25 @@ const VacancyList: React.FC<VacancyListProps> = ({ vacancies, onApply }) => {
                   : 'Зарплата не указана'}
               </Badge>
             </div>
-
-            <div className="mt-4 flex flex-col xs:flex-row gap-2">
+            <div className="mt-4 flex flex-col xs:flex-row gap-3">
               <Button
                 variant="outline"
                 size="sm"
-                className="text-sm py-2 px-4 sm:py-1 sm:px-3"
+                className="text-sm py-2 px-4 sm:py-1 sm:px-3 mb-2"
                 asChild
               >
                 <a
                   href={vacancy.alternate_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pb-6"
                 >
                   Посмотреть вакансию
                 </a>
               </Button>
-
               <Button
                 variant={isApplied ? 'outline' : 'default'}
                 size="sm"
-                className="text-sm py-2 px-4 sm:py-1 sm:px-3"
+                className="text-sm py-2 px-4 sm:py-1 sm:px-3 mb-2"
                 onClick={() => handleApply(vacancy.id)}
                 disabled={isApplied}
               >
