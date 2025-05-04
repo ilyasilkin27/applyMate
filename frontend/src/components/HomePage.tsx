@@ -149,7 +149,7 @@ const HomePage: React.FC = () => {
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Редактировать сопроводительное письмо</DialogTitle>
+              <DialogTitle>Сопроводительное письмо</DialogTitle>
             </DialogHeader>
             <CoverLetter
               value={coverLetters[selectedResumeId ?? ''] || ''}
