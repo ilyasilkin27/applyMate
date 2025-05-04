@@ -19,3 +19,7 @@ export const clearSessionStorage = (): void => {
   sessionStorage.removeItem('access_token')
   sessionStorage.removeItem('refresh_token')
 }
+
+export const getFromSessionStorage = (key: string) => {
+  return sessionStorage.getItem(key)
+}
