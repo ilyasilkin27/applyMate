@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 const Login: React.FC = () => {
   const handleLogin = (): void => {
@@ -9,18 +9,17 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50">
-      <Card className="w-full max-w-md border-0 bg-white shadow-lg rounded-lg overflow-hidden">
-        <CardHeader className="text-center p-8 pb-6">
-          <CardTitle className="text-3xl font-bold text-neutral-900">
-            ApplyMate
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">
+            Вход в ApplyMate
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-8 pt-0">
+        <CardContent>
           <Button
             onClick={handleLogin}
-            className="w-full text-lg font-medium"
-            size="lg"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Войти через HeadHunter
           </Button>
