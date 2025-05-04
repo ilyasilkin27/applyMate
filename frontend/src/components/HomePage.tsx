@@ -103,9 +103,8 @@ const HomePage: React.FC = () => {
             />
             <Button
               variant="outline"
-              size="sm"
               onClick={() => setShowCoverLetterModal(true)}
-              className="mt-2"
+              className="flex items-center gap-2 h-11 px-5 text-base"
             >
               ✉️
             </Button>
