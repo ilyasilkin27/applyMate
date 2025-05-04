@@ -14,9 +14,6 @@ const Login: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-primary">
             Вход в ApplyMate
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
-            Войдите через HeadHunter для доступа к сервису
-          </p>
         </div>
 
         <Button
