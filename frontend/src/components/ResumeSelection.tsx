@@ -20,34 +20,37 @@ const ResumeSelection: React.FC<ResumeSelectionProps> = ({
   onSelect,
   hasLoadedOnce = false,
 }) => (
-  <div className="py-4">
-    <Card className="border-0 shadow-lg rounded-lg">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-primary">
+  <div className="py-4 px-2 sm:px-4">
+    <Card className="shadow-sm rounded-lg">
+      <CardHeader className="px-4 sm:px-6">
+        <CardTitle className="text-xl sm:text-2xl font-bold text-primary">
           Выберите резюме
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent className="p-3 sm:p-4">
         {loading && (
           <div className="flex justify-center py-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-primary" />
           </div>
         )}
-
         {error && (
           <Alert variant="destructive" className="mt-3 rounded-lg">
-            <AlertDescription>{error}</AlertDescription>
+            <AlertDescription className="text-sm sm:text-base">
+              {error}
+            </AlertDescription>
           </Alert>
         )}
-
         {!loading && !error && resumes.length === 0 && hasLoadedOnce && (
           <Alert variant="default" className="mt-3 rounded-lg">
-            <AlertDescription>Резюме не найдены</AlertDescription>
+            <AlertDescription className="text-sm sm:text-base">
+              Резюме не найдены
+            </AlertDescription>
           </Alert>
         )}
-
         {!loading && !error && resumes.length > 0 && (
-          <ResumeList resumes={resumes} onSelect={onSelect} />
+          <div className="overflow-x-auto">
+            <ResumeList resumes={resumes} onSelect={onSelect} />
+          </div>
         )}
       </CardContent>
     </Card>

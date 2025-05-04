@@ -48,7 +48,7 @@ const VacancyList: React.FC<VacancyListProps> = ({ vacancies, onApply }) => {
               </div>
 
               <p className="text-muted-foreground text-sm mb-3">
-                Опубликовано:{' '}
+                Опубликовано:
                 {new Date(vacancy.published_at).toLocaleDateString()}
               </p>
 

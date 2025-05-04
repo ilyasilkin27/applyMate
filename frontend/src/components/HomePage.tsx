@@ -86,14 +86,8 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {' '}
-      {/* Changed from bg-gray-50 to bg-background */}
       <div className="container mx-auto p-4">
-        {' '}
-        {/* Added container for consistent width */}
         <Card className="mb-4">
-          {' '}
-          {/* Removed shadow-sm as it's now part of the card style */}
           <CardHeader className="p-4">
             <div className="flex gap-2">
               <ModeToggle />

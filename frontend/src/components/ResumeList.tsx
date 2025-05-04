@@ -35,7 +35,7 @@ const ResumeList: React.FC<ResumeListProps> = ({ resumes, onSelect }) => {
             <SelectContent>
               {resumes.map((resume) => (
                 <SelectItem key={resume.id} value={resume.id}>
-                  {resume.title} - {resume.first_name} {resume.middle_name}{' '}
+                  {resume.title} - {resume.first_name} {resume.middle_name}
                   {resume.last_name}
                 </SelectItem>
               ))}
