@@ -90,7 +90,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
                 'Откликнуться на все вакансии'
               )}
             </Button>
-            <div className="flex-1 min-h-[300px]">
+            <div className="h-[60vh] overflow-y-auto">
               <VacancyList vacancies={vacancies} onApply={onApply} />
             </div>
           </>

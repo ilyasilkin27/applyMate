@@ -69,7 +69,7 @@ const RecommendedVacancies: React.FC<RecommendedVacanciesProps> = ({
         )}
 
         {!loading && !error && filteredVacancies.length > 0 && (
-          <div className="flex-1 min-h-[300px]">
+          <div className="h-[60vh] overflow-y-auto">
             <VacancyList
               vacancies={filteredVacancies}
               onApply={(id: string) => onApply([id])}
