@@ -19,7 +19,7 @@ const Login: React.FC = () => {
         <CardContent className="p-8 pt-0">
           <Button
             onClick={handleLogin}
-            className="w-full text-lg font-medium text-white"
+            className="w-full text-lg font-medium"
             size="lg"
           >
             Войти через HeadHunter
