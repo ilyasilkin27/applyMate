@@ -21,7 +21,7 @@ const ResumeSelection: React.FC<ResumeSelectionProps> = ({
   hasLoadedOnce = false,
 }) => (
   <div className="py-4 px-2 sm:px-4">
-    <Card className="shadow-sm rounded-lg">
+    <Card className="shadow-sm rounded-lg max-w-full overflow-hidden">
       <CardHeader className="px-4 sm:px-6">
         <CardTitle className="text-xl sm:text-2xl font-bold text-primary">
           Выберите резюме
@@ -48,7 +48,7 @@ const ResumeSelection: React.FC<ResumeSelectionProps> = ({
           </Alert>
         )}
         {!loading && !error && resumes.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-visible">
             <ResumeList resumes={resumes} onSelect={onSelect} />
           </div>
         )}

@@ -96,7 +96,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
                     Отправка...
                   </>
                 ) : (
-                  'Отправить на все'
+                  'Откликнуться на все вакансии'
                 )}
               </Button>
               <VacancyList vacancies={vacancies} onApply={onApply} />
