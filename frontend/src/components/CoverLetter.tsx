@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea'
 interface CoverLetterProps {
   value: string
   onChange: (value: string) => void
+  className?: string
 }
 
 const CoverLetter: React.FC<CoverLetterProps> = ({ value, onChange }) => (

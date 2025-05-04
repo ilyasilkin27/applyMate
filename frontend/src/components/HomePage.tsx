@@ -88,13 +88,13 @@ const HomePage: React.FC = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4">
         <Card className="mb-4">
-          <CardHeader className="p-4">
+          <CardHeader className="p-4 pb-0">
             <div className="flex gap-2">
               <ModeToggle />
               <Logout />
             </div>
           </CardHeader>
-          <CardContent className="p-4">
+          <CardContent className="p-4 pt-0">
             <ResumeSelection
               resumes={resumes}
               loading={resumesLoading}
@@ -107,8 +107,7 @@ const HomePage: React.FC = () => {
               onClick={() => setShowCoverLetterModal(true)}
               className="mt-2"
             >
-              <span className="mr-2">✏️</span>
-              Сопроводительное письмо
+              ✉️
             </Button>
           </CardContent>
         </Card>

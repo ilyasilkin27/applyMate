@@ -15,10 +15,9 @@ const Logout: React.FC = () => {
       <Button
         variant="outline"
         onClick={handleLogout}
-        className="flex items-center gap-2 font-medium text-destructive hover:text-destructive"
+        className="flex items-center gap-2 font-medium text-destructive hover:text-destructive h-11 px-5 text-base"
       >
-        <ExitIcon className="h-4 w-4" />
-        <span>Выйти</span>
+        <ExitIcon className="h-5 w-5" />
       </Button>
     </div>
   )

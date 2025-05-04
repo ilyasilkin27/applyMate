@@ -19,7 +19,7 @@ const ResumeSelection: React.FC<ResumeSelectionProps> = ({
   onSelect,
   hasLoadedOnce = false,
 }) => (
-  <div className="py-4 px-2 sm:px-4 space-y-4">
+  <div className="py-4 space-y-4 pt-0">
     <h2 className="text-xl sm:text-2xl font-bold text-primary">
       Выберите резюме
     </h2>
