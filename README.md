@@ -3,11 +3,26 @@
 
 # ApplyMate
 
-ApplyMate is a web application that helps you streamline your job application process. It allows you to:
+**ApplyMate** is a web application that makes the job application process faster and easier.  
+Now you can:
 
 - Log in using your hh.ru credentials.
-- Fetch all your resumes and recommended vacancies.
-- Apply to all vacancies with a single click.
-- Search for vacancies by keyword to find the most relevant opportunities.
+- View all your resumes and the jobs that suit you.
+- Apply to all job openings with one click.
+- Search for jobs by keywords to find the best matches.
 
-Please note that there is a limit of 200 vacancies per day that you can apply to.
+**Limit:** 200 applications per day.
+
+## Open Source
+
+**ApplyMate** is open-source. If you have ideas, fixes, or just want to contribute — feel free to create an issue or pull request.
+
+### License
+
+This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html). You can use, modify, and distribute the code under this license.
+
+## Support the Project
+
+If the project helped you land a job or made your day better, I’d appreciate your support (:
+
+[![QR Code](https://i.postimg.cc/SK3hM9SG/Screenshot-20250505-153206.png)](https://postimg.cc/SX630JzX)
