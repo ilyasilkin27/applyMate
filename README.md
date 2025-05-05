@@ -1,5 +1,8 @@
 [![Ru](https://img.shields.io/badge/Rus-blue)](README_ru.md)
 [![Live](https://img.shields.io/badge/Live-pink)](https://apply-mate-frontend.vercel.app/login)
+[![License](https://img.shields.io/badge/license-GPL%20v3-blue)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![Issues](https://img.shields.io/github/issues/username/repository)](https://github.com/username/repository/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/username/repository)](https://github.com/username/repository/pulls)
 
 # ApplyMate
 

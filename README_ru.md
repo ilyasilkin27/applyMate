@@ -1,5 +1,3 @@
-[![Live](https://img.shields.io/badge/Live-pink)](https://apply-mate-frontend.vercel.app/login)
-
 # ApplyMate
 
 **ApplyMate** — это веб-приложение, которое делает процесс подачи заявок на работу проще и быстрее.  
