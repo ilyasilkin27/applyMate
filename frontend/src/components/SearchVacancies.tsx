@@ -20,6 +20,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
   searchKeyword,
   setSearchKeyword,
   onApply,
+  coverLetter,
 }) => {
   const [isApplying, setIsApplying] = useState(false)
   const [applyError, setApplyError] = useState<string | null>(null)
@@ -39,7 +40,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
     setApplyError(null)
     try {
       const vacancyIds = vacancies.map((v) => v.id)
-      await applyAllVacancies(selectedResumeId, vacancyIds, '', setApplyError)
+      await applyAllVacancies(selectedResumeId, vacancyIds, coverLetter, setApplyError)
     } finally {
       setIsApplying(false)
     }
