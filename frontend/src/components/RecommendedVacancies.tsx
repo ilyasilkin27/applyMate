@@ -22,6 +22,7 @@ const RecommendedVacancies: React.FC<RecommendedVacanciesProps> = ({
 }) => {
   const { vacancies, loading, error } = useFetchVacancies(
     selectedResumeId,
+    null,
     null
   )
   const [filteredVacancies, setFilteredVacancies] = useState<Vacancy[]>([])
