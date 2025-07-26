@@ -10,7 +10,8 @@ interface FetchVacanciesResult {
 
 const useFetchVacancies = (
   selectedResumeId: string | null,
-  searchKeyword: string | null
+  searchKeyword: string | null,
+  searchCity: string | null
 ): FetchVacanciesResult => {
   const [vacancies, setVacancies] = useState<Vacancy[]>([])
   const [loading, setLoading] = useState<boolean>(false)
@@ -32,7 +33,7 @@ const useFetchVacancies = (
 
         const cacheKey = `vacancies_${selectedResumeId || 'search'}_${
           searchKeyword || 'none'
-        }`
+        }_${searchCity || 'none'}`
         const cached = sessionStorage.getItem(cacheKey)
 
         if (cached) {
@@ -40,9 +41,17 @@ const useFetchVacancies = (
           setLoading(false)
         }
 
-        const url = searchKeyword
-          ? `https://applymate-vacancies-service.onrender.com/api/vacancies/search?text=${searchKeyword}`
-          : `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`
+        let url: string
+        if (searchKeyword) {
+          const params = new URLSearchParams()
+          params.append('text', searchKeyword)
+          if (searchCity) {
+            params.append('area', searchCity)
+          }
+          url = `https://applymate-vacancies-service.onrender.com/api/vacancies/search?${params.toString()}`
+        } else {
+          url = `https://applymate-vacancies-service.onrender.com/api/vacancies/${selectedResumeId}/similar_vacancies`
+        }
 
         const data = await ky
           .get(url, {
@@ -74,7 +83,7 @@ const useFetchVacancies = (
     }
 
     const debounceTimer = setTimeout(() => {
-      if (selectedResumeId || searchKeyword) {
+      if (selectedResumeId || searchKeyword || searchCity) {
         fetchVacancies()
       }
     }, 300)
@@ -83,7 +92,7 @@ const useFetchVacancies = (
       abortController.abort()
       clearTimeout(debounceTimer)
     }
-  }, [selectedResumeId, searchKeyword])
+  }, [selectedResumeId, searchKeyword, searchCity])
 
   return { vacancies, loading, error }
 }

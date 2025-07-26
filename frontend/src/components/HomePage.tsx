@@ -40,6 +40,7 @@ const HomePage: React.FC = () => {
   )
   const [customAlert, setCustomAlert] = useState<string | null>(null)
   const [searchKeyword, setSearchKeyword] = useState<string>('')
+  const [searchCity, setSearchCity] = useState<string>('')
   const [showCoverLetterModal, setShowCoverLetterModal] =
     useState<boolean>(false)
 
@@ -118,6 +119,8 @@ const HomePage: React.FC = () => {
                   selectedResumeId={selectedResumeId}
                   searchKeyword={searchKeyword}
                   setSearchKeyword={setSearchKeyword}
+                  searchCity={searchCity}
+                  setSearchCity={setSearchCity}
                   onApply={handleApplyVacancy}
                   coverLetter={coverLetters[selectedResumeId] || ''}
                 />
