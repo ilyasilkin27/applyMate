@@ -6,6 +6,7 @@ import { Loader2, Search, MapPin } from 'lucide-react'
 import VacancyList from './VacancyList'
 import useFetchVacancies from '../api/fetchVacancies'
 import { applyAllVacancies } from '../utils/handleApply'
+import { cityToIdMapping, isValidCity } from '../utils/cityMapping'
 
 interface SearchVacanciesProps {
   selectedResumeId: string | null
@@ -17,24 +18,7 @@ interface SearchVacanciesProps {
   coverLetter: string
 }
 
-const popularCities = [
-  'Москва',
-  'Санкт-Петербург',
-  'Петрозаводск',
-  'Новосибирск',
-  'Екатеринбург',
-  'Казань',
-  'Нижний Новгород',
-  'Челябинск',
-  'Самара',
-  'Уфа',
-  'Ростов-на-Дону',
-  'Краснодар',
-  'Пермь',
-  'Воронеж',
-  'Волгоград',
-  'Красноярск'
-]
+const popularCities = Object.keys(cityToIdMapping)
 
 const SearchVacancies: React.FC<SearchVacanciesProps> = ({
   selectedResumeId,
@@ -58,6 +42,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
   const hasSearchResults = (!!searchKeyword || !!searchCity) && vacancies.length > 0
   const showEmptyState =
     (searchKeyword || searchCity) && !loading && !error && vacancies.length === 0
+  const showCityError = searchCity && !isValidCity(searchCity) && !showCitySuggestions
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -122,7 +107,7 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
                 setShowCitySuggestions(true)
               }}
               onFocus={() => setShowCitySuggestions(true)}
-              className="pl-10"
+              className={`pl-10 ${showCityError ? 'border-red-500' : ''}`}
             />
             {showCitySuggestions && searchCity && filteredCities.length > 0 && (
               <div className="absolute top-full left-0 right-0 bg-background border border-border rounded-md shadow-lg z-10 max-h-48 overflow-y-auto">
@@ -139,6 +124,14 @@ const SearchVacancies: React.FC<SearchVacanciesProps> = ({
             )}
           </div>
         </div>
+
+        {showCityError && (
+          <Alert variant="destructive" className="rounded-lg">
+            <AlertDescription>
+              Город "{searchCity}" не найден. Выберите город из списка или введите корректное название.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {loading && (
           <div className="flex justify-center py-4">

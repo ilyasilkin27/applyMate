@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ky from 'ky'
 import type { Vacancy } from '../types/models'
+import { getCityId } from '../utils/cityMapping'
 
 interface FetchVacanciesResult {
   vacancies: Vacancy[]
@@ -42,11 +43,16 @@ const useFetchVacancies = (
         }
 
         let url: string
-        if (searchKeyword) {
+        if (searchKeyword || searchCity) {
           const params = new URLSearchParams()
-          params.append('text', searchKeyword)
+          if (searchKeyword) {
+            params.append('text', searchKeyword)
+          }
           if (searchCity) {
-            params.append('area', searchCity)
+            const cityId = getCityId(searchCity)
+            if (cityId) {
+              params.append('area', cityId)
+            }
           }
           url = `https://applymate-vacancies-service.onrender.com/api/vacancies/search?${params.toString()}`
         } else {
