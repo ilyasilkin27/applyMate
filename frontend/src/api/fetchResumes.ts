@@ -16,12 +16,13 @@ const useFetchResumes = (): FetchResumesResult => {
   useEffect(() => {
     const abortController = new AbortController()
     const { signal } = abortController
+    let retryTimer: number | undefined
 
     const fetchResumes = async (attempt = 0) => {
       const accessToken = sessionStorage.getItem('access_token')
       if (!accessToken) {
         if (attempt < 3) {
-          setTimeout(() => fetchResumes(attempt + 1), 300)
+          retryTimer = window.setTimeout(() => fetchResumes(attempt + 1), 300)
           return
         }
         setError('No access token')
@@ -60,18 +61,38 @@ const useFetchResumes = (): FetchResumesResult => {
         setResumes(data.items || [])
         sessionStorage.setItem(cacheKey, JSON.stringify(data.items || []))
       } catch (err) {
-        if (!signal.aborted) {
-          setError(err instanceof Error ? err.message : String(err))
+        if (signal.aborted) return
+        const message = err instanceof Error ? err.message : String(err)
+        const isTimeout =
+          (err as any)?.name === 'TimeoutError' ||
+          /timed out|timeout|ETIMEDOUT/i.test(message)
+
+        if (isTimeout && attempt < 8) {
+          const delayMs = Math.min(1000 * Math.pow(2, attempt), 10000)
+          retryTimer = window.setTimeout(() => {
+            if (!signal.aborted) {
+              fetchResumes(attempt + 1)
+            }
+          }, delayMs)
+          return
         }
+
+        setError(message)
       } finally {
-        if (!signal.aborted) {
+        if (signal.aborted) return
+        if (!(retryTimer && typeof retryTimer === 'number')) {
           setLoading(false)
         }
       }
     }
 
     fetchResumes()
-    return () => abortController.abort()
+    return () => {
+      abortController.abort()
+      if (retryTimer) {
+        clearTimeout(retryTimer)
+      }
+    }
   }, [])
 
   return { resumes, loading, error }

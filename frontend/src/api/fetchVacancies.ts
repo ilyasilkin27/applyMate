@@ -21,8 +21,9 @@ const useFetchVacancies = (
   useEffect(() => {
     const abortController = new AbortController()
     const { signal } = abortController
+    let retryTimer: number | undefined
 
-    const fetchVacancies = async () => {
+    const fetchVacancies = async (attempt: number = 0) => {
       setLoading(true)
       setError(null)
 
@@ -78,11 +79,27 @@ const useFetchVacancies = (
         setVacancies(data.items || [])
         sessionStorage.setItem(cacheKey, JSON.stringify(data.items || []))
       } catch (err) {
-        if (!signal.aborted) {
-          setError(err instanceof Error ? err.message : String(err))
+        if (signal.aborted) return
+
+        const message = err instanceof Error ? err.message : String(err)
+        const isTimeout =
+          (err as any)?.name === 'TimeoutError' ||
+          /timed out|timeout|ETIMEDOUT/i.test(message)
+
+        if (isTimeout && attempt < 8) {
+          const delayMs = Math.min(1000 * Math.pow(2, attempt), 10000)
+          retryTimer = window.setTimeout(() => {
+            if (!signal.aborted) {
+              fetchVacancies(attempt + 1)
+            }
+          }, delayMs)
+          return
         }
+
+        setError(message)
       } finally {
-        if (!signal.aborted) {
+        if (signal.aborted) return
+        if (!(retryTimer && typeof retryTimer === 'number')) {
           setLoading(false)
         }
       }
@@ -90,13 +107,16 @@ const useFetchVacancies = (
 
     const debounceTimer = setTimeout(() => {
       if (selectedResumeId || searchKeyword || searchCity) {
-        fetchVacancies()
+        fetchVacancies(0)
       }
     }, 300)
 
     return () => {
       abortController.abort()
       clearTimeout(debounceTimer)
+      if (retryTimer) {
+        clearTimeout(retryTimer)
+      }
     }
   }, [selectedResumeId, searchKeyword, searchCity])
 
