@@ -1,5 +1,6 @@
 [![Ru](https://img.shields.io/badge/Rus-blue)](README_ru.md)
-[![Live](https://img.shields.io/badge/Live-pink)](https://apply-mate-ten.vercel.app)
+
+> **Archived.** hh.ru revoked the free API access this project relied on for applying and resume search, so the backend is dead. The frontend UI is still up but non-functional. Kept here as a code sample.
 
 # ApplyMate
 
